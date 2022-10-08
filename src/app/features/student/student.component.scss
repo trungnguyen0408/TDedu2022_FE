@@ -1,0 +1,27 @@
+.student-page {
+  padding: 30px;
+
+  .search-form {
+    .mat-form-field {
+      width: 100%;
+    }
+  }
+
+  .table-student {
+    table {
+      width: 100%;
+      margin-top: 150px;
+
+      .mat-column-position,
+      .mat-column-preview,
+      .mat-column-edit,
+      .mat-column-del {
+        width: 5%;
+      }
+
+      .mat-column-name {
+        width: 80%;
+      }
+    }
+  }
+}

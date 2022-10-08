@@ -1,7 +1,19 @@
-<mat-toolbar-row>
-  <span>Second Line</span>
-  <span class="example-spacer"></span>
-  <mat-icon class="example-icon" aria-hidden="false" aria-label="Example user verified icon">verified_user</mat-icon>
-</mat-toolbar-row>
-<mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>
-
+<app-nav></app-nav>
+<mat-drawer-container class="example-container">
+  <mat-drawer mode="side" opened class="list-option">
+    <mat-selection-list #shoes [multiple]="false">
+      <mat-list-option routerLink="/student" routerLinkActive="active">
+        Student
+      </mat-list-option>
+      <mat-list-option routerLink="/lecturer" routerLinkActive="active">
+        Lecturer
+      </mat-list-option>
+      <mat-list-option routerLink="/department" routerLinkActive="active">
+        Department
+      </mat-list-option>
+    </mat-selection-list>
+  </mat-drawer>
+  <mat-drawer-content class="main-content">
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

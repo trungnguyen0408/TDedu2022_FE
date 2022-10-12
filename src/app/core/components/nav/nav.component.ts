@@ -9,16 +9,12 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavComponent implements OnInit {
 
-  public isLoggedIn$: Observable<boolean> = new Observable<boolean>();
+  constructor(public authService: AuthService) { }
 
-  constructor(private AuthService: AuthService) { }
-
-  public ngOnInit() {
-    this.isLoggedIn$ = this.AuthService.isLoggedIn();
-  }
+  public ngOnInit() {}
 
   public onLogout() {
-    this.AuthService.logout();
+    this.authService.logout();
   }
 
 }

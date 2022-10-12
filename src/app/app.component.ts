@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
 import { AuthService } from './core/services/auth.service';
 
 @Component({
@@ -8,10 +7,9 @@ import { AuthService } from './core/services/auth.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  public isLoggedIn$: Observable<boolean> = new Observable<boolean>();
+
   title = 'ClientApp';
-  constructor(private AuthService: AuthService) { }
+  constructor(public authService: AuthService) { }
   public ngOnInit() {
-    this.isLoggedIn$ = this.AuthService.isLoggedIn();
   }
 }

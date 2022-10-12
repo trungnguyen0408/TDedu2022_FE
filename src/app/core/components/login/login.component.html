@@ -10,11 +10,6 @@
         <mat-label>Password</mat-label>
         <input formControlName="passWord" matInput type="password" placeholder="password">
       </mat-form-field>
-      <mat-radio-group formControlName="role" aria-label="Select an role">
-        <mat-radio-button [checked]="true" value="admin">Admin</mat-radio-button>
-        <mat-radio-button value="lecturer">Lecturer</mat-radio-button>
-        <mat-radio-button value="student">Student</mat-radio-button>
-      </mat-radio-group>
       <button class="login-button" type="submit" [disabled]="!loginForm.valid">login</button>
       <p class="message">Not registered? <a class="create-account" (click)="openDialog()">Create an account</a></p>
     </form>

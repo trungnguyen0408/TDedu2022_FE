@@ -8,30 +8,51 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-
+  private loggedIn$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public isLoggedIn$ = this.loggedIn$.asObservable();
   private REST_API_SERVER = environment.api;
-  private httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    }),
-  };
-  constructor(private httpClient: HttpClient, private router: Router) { }
+
+  constructor(private httpClient: HttpClient, private router: Router) {
+    const token = localStorage.getItem('token');
+    this.loggedIn$.next(!!token);
+  }
+
+  getHeaders() {
+    const token = localStorage.getItem('token');
+    return token ? new HttpHeaders().set('Authorization', 'Bearer ' + token) : null;
+  }
+
+  setToken(token: string) {
+    localStorage.setItem('token', token);
+  }
+
+  removeToken() {
+    localStorage.removeItem('token');
+  }
+
+  getToken() {
+    return localStorage.getItem('token');
+  }
+
   public logout() {
-    this.loggedIn.next(false);
+    this.removeToken();
+    this.loggedIn$.next(false);
     this.router.navigate(['']);
   }
+
   public login(account: any): void {
     if (account) {
-      this.loggedIn.next(true);
+      this.loggedIn$.next(true);
+      this.setToken(account.userName)
       this.router.navigate(['/student']);
     }
   }
-  public isLoggedIn(): Observable<boolean> {
-    return this.loggedIn.asObservable();
-  }
-  public getAccountById(userName: string): Observable<any> {
+
+  public getProfile(userName: string): Observable<any> {
+    let headers = this.getHeaders();
     const url = `${this.REST_API_SERVER}/api/Account/` + userName;
-    return this.httpClient.get<any>(url, this.httpOptions);
+    if (headers instanceof HttpHeaders)
+      return this.httpClient.get<any>(url, { headers: headers });
+    return this.httpClient.get<any>(url);
   }
 }

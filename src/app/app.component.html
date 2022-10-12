@@ -1,6 +1,6 @@
-<app-nav></app-nav>
+<app-nav *ngIf="authService.isLoggedIn$ | async as isLoggedIn"></app-nav>
 <mat-drawer-container class="example-container">
-  <mat-drawer mode="side" opened class="list-option" *ngIf="isLoggedIn$ | async as isLoggedIn">
+  <mat-drawer mode="side" opened class="list-option" *ngIf="authService.isLoggedIn$ | async as isLoggedIn">
     <mat-selection-list #shoes [multiple]="false">
       <mat-list-option routerLink="/student" routerLinkActive="active">
         Student
@@ -13,7 +13,7 @@
       </mat-list-option>
     </mat-selection-list>
   </mat-drawer>
-  <mat-drawer-content [ngClass]="'isLoggedIn$ | async as isLoggedIn'?' ' :'main-contet'">
+  <mat-drawer-content [ngClass]="'authService.isLoggedIn$ | async as isLoggedIn'?' ' :'main-contet'">
     <router-outlet></router-outlet>
   </mat-drawer-content>
 </mat-drawer-container>

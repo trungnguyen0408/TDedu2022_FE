@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { RegisterComponent } from '../register/register.component';
 
@@ -10,15 +11,18 @@ import { RegisterComponent } from '../register/register.component';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  constructor(public dialog: MatDialog, private authService: AuthService, private formBuilder: FormBuilder) { }
+  constructor(public dialog: MatDialog, private authService: AuthService, private formBuilder: FormBuilder, private router: Router) {
+    if (authService.isLoggedIn$) {
+      this.router.navigate(['/student']);
+    }
+  }
 
   ngOnInit(): void {
   }
 
   public loginForm = this.formBuilder.group({
     userName: ['', Validators.required],
-    passWord: ['', Validators.required],
-    role: ['admin']
+    passWord: ['', Validators.required]
   });
   public account: any = {
     userName: '',
@@ -33,11 +37,9 @@ export class LoginComponent implements OnInit {
     this.account = {
       userName: this.loginForm.value.userName,
       passWord: this.loginForm.value.passWord,
-      role: this.loginForm.value.role
     }
     if (this.account.userName === 'admin' && this.account.passWord === '123') {
       this.authService.login(this.account);
-      this.authService.isLoggedIn();
     }
   }
 }

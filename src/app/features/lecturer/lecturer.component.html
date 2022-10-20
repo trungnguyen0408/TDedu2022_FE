@@ -1,1 +1,92 @@
-<p>lecturer works!</p>
+<div class="lecturer-page">
+    <h1>Lecturer</h1>
+    <div class="container pb-5">
+        <div class="row ">
+            <div class="dropdown px-3">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Action
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Export all</a></li>
+                    <li><a href="#">Export 0 item</a></li>
+                </ul>
+            </div>
+            <button class="btn-create btn-primary " type="submit">New users</button>
+
+        </div>
+    </div>
+    <form class="search-form">
+        <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Search</mat-label>
+            <input type="text" placeholder="Key work" aria-label="Number" matInput>
+        </mat-form-field>
+    </form>
+    <div class="table-lecturer">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+            <!--- Note that these columns can be defined in any order.
+                The actual rendered columns are set as a property on the row definition" -->
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef> No. </th>
+                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="fullname">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.fullname}} </td>
+            </ng-container>
+            <!-- email Column -->
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef> Email </th>
+                <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+            </ng-container>
+            <!-- role Column -->
+            <ng-container matColumnDef="role">
+                <th mat-header-cell *matHeaderCellDef> Role </th>
+                <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+            </ng-container>
+            <!-- create at Column -->
+            <ng-container matColumnDef="create_at">
+                <th mat-header-cell *matHeaderCellDef> Create at </th>
+                <td mat-cell *matCellDef="let element"> {{element.create_at}} </td>
+            </ng-container>
+            <!-- status Column -->
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Status </th>
+                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+            </ng-container>
+            <ng-container matColumnDef="preview">
+                <th mat-header-cell *matHeaderCellDef> Preview </th>
+                <td mat-cell *matCellDef="let element">
+                    <a class="preview" (click)="preview()">
+                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="2em"
+                            width="2em" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="none" stroke="#000" stroke-width="2"
+                                d="M12,17 C9.27272727,17 6,14.2222222 6,12 C6,9.77777778 9.27272727,7 12,7 C14.7272727,7 18,9.77777778 18,12 C18,14.2222222 14.7272727,17 12,17 Z M11,12 C11,12.55225 11.44775,13 12,13 C12.55225,13 13,12.55225 13,12 C13,11.44775 12.55225,11 12,11 C11.44775,11 11,11.44775 11,12 Z">
+                            </path>
+                        </svg>
+                    </a>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="edit">
+                <th mat-header-cell *matHeaderCellDef> Edit </th>
+                <td mat-cell *matCellDef="let element">
+                    <a (click)="edit()"> <svg stroke="currentColor" fill="currentColor" stroke-width="0"
+                            viewBox="0 0 24 24" height="2em" width="2em" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="none" d="M0 0h24v24H0z"></path>
+                            <path
+                                d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 5.63l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83a.996.996 0 000-1.41z">
+                            </path>
+                        </svg></a>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+
+</div>

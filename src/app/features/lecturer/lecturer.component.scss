@@ -1,0 +1,38 @@
+.lecturer-page {
+    padding: 30px;
+
+    .search-form {
+        .mat-form-field {
+            width: 100%;
+        }
+    }
+
+    .table-lecturer {
+        table {
+            width: 100%;
+            // margin-top: 150px;
+
+            .mat-column-position,
+            .mat-column-preview,
+            .mat-column-edit {
+                width: 5%;
+            }
+
+            .mat-column-email {
+                width: 20%;
+            }
+
+            .mat-column-fullname,
+            .mat-column-role,
+            .mat-column-create_at,
+            .mat-column-status {
+                width: 10%;
+            }
+        }
+    }
+
+    .row {
+        float: right;
+
+    }
+}

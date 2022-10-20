@@ -44,7 +44,7 @@ export class AuthService {
     if (account) {
       this.loggedIn$.next(true);
       this.setToken(account.userName)
-      this.router.navigate(['/student']);
+      this.router.navigate(['/home']);
     }
   }
 

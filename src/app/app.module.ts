@@ -3,11 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StudentComponent } from './features/student/student.component';
-import { DepartmentComponent } from './features/department/department.component';
 import { LecturerComponent } from './features/lecturer/lecturer.component';
 import { LoginComponent } from './core/components/login/login.component';
 import { RegisterComponent } from './core/components/register/register.component';
+import { HomeComponent } from './features/home/home.component';
+import { AdminComponent } from './features/admin/admin.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
@@ -28,17 +28,18 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { IconsModule } from "@progress/kendo-angular-icons";
+import { PagerModule } from '@progress/kendo-angular-pager';
 
 @NgModule({
   declarations: [
     AppComponent,
-    StudentComponent,
-    DepartmentComponent,
     LecturerComponent,
     NavComponent,
     LoginComponent,
     RegisterComponent,
+    HomeComponent,
+    AdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,7 +62,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    MatPaginatorModule
+    IconsModule,
+    PagerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

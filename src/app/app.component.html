@@ -2,14 +2,11 @@
 <mat-drawer-container class="example-container">
   <mat-drawer mode="side" opened class="list-option" *ngIf="authService.isLoggedIn$ | async as isLoggedIn">
     <mat-selection-list #shoes [multiple]="false">
-      <mat-list-option routerLink="/student" routerLinkActive="active">
-        Student
+      <mat-list-option routerLink="/home" routerLinkActive="active">
+        Home
       </mat-list-option>
-      <mat-list-option routerLink="/lecturer" routerLinkActive="active">
-        Lecturer
-      </mat-list-option>
-      <mat-list-option routerLink="/department" routerLinkActive="active">
-        Department
+      <mat-list-option routerLink="/admin" routerLinkActive="active">
+        User
       </mat-list-option>
     </mat-selection-list>
   </mat-drawer>

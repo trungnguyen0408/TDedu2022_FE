@@ -13,7 +13,7 @@ import { RegisterComponent } from '../register/register.component';
 export class LoginComponent implements OnInit {
   constructor(public dialog: MatDialog, private authService: AuthService, private formBuilder: FormBuilder, private router: Router) {
     if (authService.isLoggedIn$) {
-      this.router.navigate(['/student']);
+      this.router.navigate(['/home']);
     }
   }
 
@@ -24,15 +24,18 @@ export class LoginComponent implements OnInit {
     userName: ['', Validators.required],
     passWord: ['', Validators.required]
   });
+
   public account: any = {
     userName: '',
     passWord: ''
   };
+
   openDialog() {
     const dialogRef = this.dialog.open(RegisterComponent, {
       width: '500px'
     });
   }
+
   onLogin() {
     this.account = {
       userName: this.loginForm.value.userName,

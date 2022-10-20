@@ -1,0 +1,72 @@
+.admin-page {
+  padding: 30px;
+
+  .search-form {
+    padding-top: 20px;
+
+    .mat-form-field {
+      width: 100%;
+    }
+  }
+
+  .table-user {
+    padding-top: 20px;
+
+    table {
+      width: 100%;
+
+      th.mat-header-cell {
+        cursor: pointer;
+        font-size: medium;
+        font-weight: bold;
+      }
+
+      .mat-column-fullname,
+      .mat-column-email {
+        width: 25%;
+      }
+
+      .mat-column-select {
+        width: 5%;
+        padding-top: 20px;
+        padding-right: 30px;
+      }
+
+      .mat-column-status {
+        text-align: center;
+        width: 10%;
+      }
+
+      .mat-column-role,
+      .mat-column-createAt {
+        width: 10%;
+      }
+
+      .mat-column-preview,
+      .mat-column-edit,
+      .mat-column-del {
+        width: 5%;
+        cursor: pointer;
+        text-align: center;
+      }
+
+      .status {
+        width: 100%;
+        cursor: default;
+      }
+    }
+  }
+
+  .k-i-arrow-up,
+  .k-i-arrow-down {
+    color: #0d9ee6;
+  }
+
+  .k-i-edit {
+    color: #f6a652;
+  }
+
+  .k-i-trash {
+    color: #dd1923;
+  }
+}

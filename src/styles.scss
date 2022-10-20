@@ -1,12 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+// Import only the PanelBar and Grid styles by using Node Sass.
+@import "~@progress/kendo-theme-default/scss/panelbar/_index.scss";
+@import "~@progress/kendo-theme-default/scss/grid/_index.scss";
+
+// Import only the PanelBar and Grid styles by using Dart Sass.
+@import "~@progress/kendo-theme-default/scss/panelbar/";
+@import "~@progress/kendo-theme-default/scss/grid/";
 
 html,
 body {
   height: 100%;
-}
-
-body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: black;
 }

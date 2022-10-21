@@ -4,6 +4,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { RegisterComponent } from '../register/register.component';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { LocalStorageService } from '../../services/localStorage.service';
+import { AlertMessageService } from '../../services/alert-message.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +14,7 @@ import { RegisterComponent } from '../register/register.component';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  constructor(public dialog: MatDialog, private authService: AuthService, private formBuilder: FormBuilder, private router: Router) {
+  constructor(private alertMessageService: AlertMessageService, public dialog: MatDialog, private authService: AuthService, private formBuilder: FormBuilder, private router: Router, private localStorageService: LocalStorageService) {
     if (authService.isLoggedIn$) {
       this.router.navigate(['/home']);
     }
@@ -25,11 +28,6 @@ export class LoginComponent implements OnInit {
     passWord: ['', Validators.required]
   });
 
-  public account: any = {
-    userName: '',
-    passWord: ''
-  };
-
   openDialog() {
     const dialogRef = this.dialog.open(RegisterComponent, {
       width: '500px'
@@ -37,12 +35,30 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin() {
-    this.account = {
-      userName: this.loginForm.value.userName,
-      passWord: this.loginForm.value.passWord,
-    }
-    if (this.account.userName === 'admin' && this.account.passWord === '123') {
-      this.authService.login(this.account);
-    }
+    const userName = this.loginForm.value.userName;
+    const passWord = this.loginForm.value.passWord;
+
+    this.authService.logIn(userName, passWord).subscribe(data => {
+      if (data) {
+        this.alertMessageService.success("Login successfull")
+        setTimeout(() => {
+          this.authService.loggedIn$.next(true);
+          this.localStorageService.setToken(data.access_token);
+          this.localStorageService.setItem("role", data.role[0]);
+          this.router.navigate(['/home']);
+        }, 2000);
+      }
+    }, (err) => {
+      this.loginForm.reset();
+      if (err.error.username && err.error.password) {
+        this.alertMessageService.error(`${err.error.username} / ${err.error.password}`);
+        return
+      }
+      if (err.error.username) {
+        this.alertMessageService.error(err.error.username);
+      } else {
+        this.alertMessageService.error(err.error.password);
+      }
+    })
   }
 }

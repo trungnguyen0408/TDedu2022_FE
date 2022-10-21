@@ -1,37 +1,87 @@
 <div class="admin-page">
   <div class="action">
-    <div class="container-fluid px-0">
-      <div class="row">
-        <div class="col col-12 col-md-10">
-          <h1>User</h1>
-        </div>
-        <div class="col col-12 col-md-2">
-          <div class="action-button text-right d-flex justify-content-between">
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Action
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMe nuButton">
-                <a class="dropdown-item">Bulk Export</a>
-                <a class="dropdown-item" (click)="onBulkDelete()">Bulk delete</a>
-              </div>
+    <form [formGroup]="form">
+      <div class="conteiner">
+        <div class="row">
+          <div class="col-12 col-md-12 col-xl-3">
+            <mat-form-field class="w-100" appearance="fill">
+              <mat-label>Full Name</mat-label>
+              <input formControlName="fullName" placeholder="Search full name..." matInput>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-12 col-xl-3">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status">
+                <mat-option *ngFor="let status of listStatus" [value]="status">
+                  {{status}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-12 col-xl-6 d-flex align-items-center">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Choose a create at from</mat-label>
+              <input formControlName="createAtFrom" matInput [max]="createAtTo" [matDatepicker]="createAtFrom">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="createAtFrom"></mat-datepicker-toggle>
+              <mat-datepicker #createAtFrom></mat-datepicker>
+            </mat-form-field>
+            <div class="px-2">
+              &ensp;&#8212;&ensp;
             </div>
-            <div class="create-user">
-              <button class="btn btn-success">New user</button>
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Choose a create at to</mat-label>
+              <input formControlName="createAtTo" matInput [min]="createAtFrom" [matDatepicker]="createAtTo">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="createAtTo"></mat-datepicker-toggle>
+              <mat-datepicker #createAtTo></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 col-md-12 col-xl-3">
+            <mat-form-field class="w-100" appearance="fill">
+              <mat-label>Email</mat-label>
+              <input formControlName="email" placeholder="Search email..." matInput>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-12 col-xl-3">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Role</mat-label>
+              <mat-select formControlName="role">
+                <mat-option *ngFor="let role of listRole" [value]="role">
+                  {{role}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-12 col-xl-6"></div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="action-button d-flex justify-content-end">
+              <div class="search pr-3">
+                <button class="btn btn-primary" (click)="onSearch()">Search</button>
+              </div>
+              <div class="dropdown pr-3">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Action
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMe nuButton">
+                  <a class="dropdown-item">Bulk Export</a>
+                  <a class="dropdown-item" (click)="onBulkDelete()">Bulk delete</a>
+                </div>
+              </div>
+              <div class="create-user">
+                <button class="btn btn-success">New user</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="search">
-    <form class="search-form" [formGroup]="searchForm">
-      <mat-form-field class="example-full-width" appearance="fill">
-        <mat-label>Search</mat-label>
-        <input formControlName="search" placeholder="Search user name..."
-          (ngModelChange)="this.searchKeyWordChange.next($event)" matInput>
-      </mat-form-field>
+
     </form>
   </div>
   <div class="table-user">
@@ -55,9 +105,9 @@
       <ng-container matColumnDef="fullName">
         <th mat-header-cell *matHeaderCellDef (click)="onSortColumn(getSortColum().fullName)">
           <div>Full name
-            <span *ngIf="filterUser.sortColumn === getSortColum().fullName">
-              <kendo-icon *ngIf="!filterUser.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
-              <kendo-icon *ngIf="filterUser.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
+            <span *ngIf="sortFilter.sortColumn === getSortColum().fullName">
+              <kendo-icon *ngIf="!sortFilter.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
+              <kendo-icon *ngIf="sortFilter.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
             </span>
           </div>
         </th>
@@ -67,9 +117,9 @@
       <ng-container matColumnDef="email">
         <th mat-header-cell *matHeaderCellDef (click)="onSortColumn(getSortColum().email)">
           <div>Email
-            <span *ngIf="filterUser.sortColumn === getSortColum().email">
-              <kendo-icon *ngIf="!filterUser.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
-              <kendo-icon *ngIf="filterUser.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
+            <span *ngIf="sortFilter.sortColumn === getSortColum().email">
+              <kendo-icon *ngIf="!sortFilter.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
+              <kendo-icon *ngIf="sortFilter.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
             </span>
           </div>
         </th>
@@ -79,9 +129,9 @@
       <ng-container matColumnDef="role">
         <th mat-header-cell *matHeaderCellDef (click)="onSortColumn(getSortColum().role)">
           <div>Role
-            <span *ngIf="filterUser.sortColumn === getSortColum().role">
-              <kendo-icon *ngIf="!filterUser.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
-              <kendo-icon *ngIf="filterUser.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
+            <span *ngIf="sortFilter.sortColumn === getSortColum().role">
+              <kendo-icon *ngIf="!sortFilter.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
+              <kendo-icon *ngIf="sortFilter.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
             </span>
           </div>
         </th>
@@ -91,9 +141,9 @@
       <ng-container matColumnDef="createAt">
         <th mat-header-cell *matHeaderCellDef (click)="onSortColumn(getSortColum().createAt)">
           <div>Create at
-            <span *ngIf="filterUser.sortColumn === getSortColum().createAt">
-              <kendo-icon *ngIf="!filterUser.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
-              <kendo-icon *ngIf="filterUser.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
+            <span *ngIf="sortFilter.sortColumn === getSortColum().createAt">
+              <kendo-icon *ngIf="!sortFilter.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
+              <kendo-icon *ngIf="sortFilter.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
             </span>
           </div>
         </th>
@@ -103,9 +153,9 @@
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef (click)="onSortColumn(getSortColum().status)">
           <div>Status
-            <span *ngIf="filterUser.sortColumn === getSortColum().status">
-              <kendo-icon *ngIf="!filterUser.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
-              <kendo-icon *ngIf="filterUser.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
+            <span *ngIf="sortFilter.sortColumn === getSortColum().status">
+              <kendo-icon *ngIf="!sortFilter.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
+              <kendo-icon *ngIf="sortFilter.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
             </span>
           </div>
         </th>
@@ -141,6 +191,6 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
   </div>
-  <kendo-datapager [total]="50" [pageSize]="filterUser.pageSize" [skip]="skip" (pageChange)="onPageChange($event)">
+  <kendo-datapager [total]="totalData" [pageSize]="pageSize" [skip]="skip" (pageChange)="onPageChange($event)">
   </kendo-datapager>
 </div>

@@ -1,0 +1,55 @@
+.leturer-page {
+  padding: 30px;
+
+  .action {
+    border: 2px solid #d3d3d3;
+    padding: 15px;
+  }
+
+  .table-user {
+    padding-top: 60px;
+
+    table {
+      width: 100%;
+
+      th.mat-header-cell {
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: bold;
+        color: #0489df;
+      }
+
+      .mat-column-fullname,
+      .mat-column-email {
+        width: 25%;
+      }
+
+      .mat-column-status {
+        text-align: center;
+        width: 10%;
+      }
+
+      .mat-column-role,
+      .mat-column-createAt {
+        width: 10%;
+      }
+
+      .mat-column-preview,
+      .mat-column-edit {
+        width: 10%;
+        cursor: pointer;
+        text-align: center;
+      }
+
+      .status {
+        width: 100%;
+        cursor: default;
+      }
+    }
+  }
+
+  .k-i-arrow-up,
+  .k-i-arrow-down {
+    color: #0489df;
+  }
+}

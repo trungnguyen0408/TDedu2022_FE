@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageChangeEvent } from '@progress/kendo-angular-pager';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { SortColumn } from 'src/app/core/enums/sort-column';
-import { FilterUser } from 'src/app/core/models/filter-user';
+import { SortFilter } from 'src/app/core/models/sort-filter';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-admin',
@@ -15,18 +15,38 @@ import { FilterUser } from 'src/app/core/models/filter-user';
 export class AdminComponent implements OnInit {
   displayedColumns: string[] = ['select', 'fullName', 'email', 'role', 'createAt', 'status', 'preview', 'edit', 'del'];
   dataSource = new MatTableDataSource<any>();
-  searchKeyWordChange = new Subject<string>();
-  public searchForm = this.formBuilder.group({
-    search: [''],
+  form = this.formBuilder.group({
+    fullName: [''],
+    email: [''],
+    status: ['All'],
+    role: [''],
+    createAtFrom: [''],
+    createAtTo: [''],
   });
-  public filterUser: FilterUser = {
-    keyWork: '',
+  sortFilter: SortFilter = {
     sortColumn: SortColumn.none,
-    pageIndex: 1,
-    pageSize: 10
   };
-  public skip = 0;
+  fullName: string = '';
+  email: string = '';
+  status: string = '';
+  role: string = '';
+  createAtFrom?: Date;
+  createAtTo?: Date;
+  skip: number = 0;
+  pageSize: number = 10;
+  pageIndex: number = 1;
+  totalData: number = 0;
   selectionUser = new SelectionModel<any>(true, []);
+  listStatus: Array<string> = [
+    "All",
+    "Active",
+    "Inactive",
+    "Banned",
+  ];
+  public listRole: Array<string> = [
+    "Lecturer",
+    "Student",
+  ];
 
   dataTest: any[] = [{ fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
   { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
@@ -43,32 +63,35 @@ export class AdminComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataSource.data = this.dataTest;
-    this.initSearchChange();
+    this.totalData = this.dataTest.length;
   }
 
   getSortColum() {
     return SortColumn;
   }
 
+  onSearch() {
+  }
+
   onSortColumn(sortField: SortColumn) {
-    if (this.filterUser.sortColumn != sortField) {
-      this.filterUser.sortColumn = sortField;
-      this.filterUser.isDescendingSort = false;
+    if (this.sortFilter.sortColumn != sortField) {
+      this.sortFilter.sortColumn = sortField;
+      this.sortFilter.isDescendingSort = false;
     } else {
       this.switchSortDirection();
     }
   }
 
-  switchSortDirection() {
-    this.filterUser.isDescendingSort = this.filterUser.isDescendingSort ? false : true;
+  formatDateCreateAt(createAt?: Date) {
+    let date = '';
+    if (createAt) {
+      date = moment(new Date(createAt)).format("MM/DD/YYYY");
+    }
+    return date;
   }
 
-  initSearchChange() {
-    this.searchKeyWordChange.pipe(
-      debounceTime(1000),
-      distinctUntilChanged()).subscribe(value => {
-        this.filterUser.keyWork = value;
-      })
+  switchSortDirection() {
+    this.sortFilter.isDescendingSort = this.sortFilter.isDescendingSort ? false : true;
   }
 
   onBulkDelete() {
@@ -88,7 +111,7 @@ export class AdminComponent implements OnInit {
 
   onPageChange(e: PageChangeEvent) {
     this.skip = e.skip;
-    this.filterUser.pageSize = e.take;
-    this.filterUser.pageIndex = Math.ceil((e.skip + 1) / e.take);
+    this.pageSize = e.take;
+    this.pageIndex = this.skip / this.pageSize;
   }
 }

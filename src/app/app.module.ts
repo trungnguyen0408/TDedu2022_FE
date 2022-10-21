@@ -30,6 +30,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { IconsModule } from "@progress/kendo-angular-icons";
 import { PagerModule } from '@progress/kendo-angular-pager';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { PagerModule } from '@progress/kendo-angular-pager';
     ReactiveFormsModule,
     FormsModule,
     IconsModule,
-    PagerModule
+    PagerModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

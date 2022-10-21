@@ -15,5 +15,16 @@ body {
 
 a {
   text-decoration: none;
-  color: black;
+  color: #0366d6;
+  cursor: pointer;
+}
+.app-container{
+  background-color: #f9f9f9;
+  height: 100%;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
 }

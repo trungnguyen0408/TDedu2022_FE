@@ -1,92 +1,155 @@
-<div class="lecturer-page">
-    <h1>Lecturer</h1>
-    <div class="container pb-5">
-        <div class="row ">
-            <div class="dropdown px-3">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">Action
-                    <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                    <li><a href="#">Export all</a></li>
-                    <li><a href="#">Export 0 item</a></li>
-                </ul>
+<div class="leturer-page">
+  <div class="action">
+    <form [formGroup]="form">
+      <div class="conteiner">
+        <div class="row">
+          <div class="col-12 col-md-12 col-xl-3">
+            <mat-form-field class="w-100" appearance="fill">
+              <mat-label>Full Name</mat-label>
+              <input formControlName="fullName" placeholder="Search full name..." matInput>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-12 col-xl-3">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status">
+                <mat-option *ngFor="let status of listStatus" [value]="status">
+                  {{status}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-12 col-xl-6 d-flex align-items-center">
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Choose a create at from</mat-label>
+              <input formControlName="createAtFrom" matInput [max]="createAtTo" [matDatepicker]="createAtFrom">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="createAtFrom"></mat-datepicker-toggle>
+              <mat-datepicker #createAtFrom></mat-datepicker>
+            </mat-form-field>
+            <div class="px-2">
+              &ensp;&#8212;&ensp;
             </div>
-            <button class="btn-create btn-primary " type="submit">New users</button>
-
+            <mat-form-field appearance="fill" class="w-100">
+              <mat-label>Choose a create at to</mat-label>
+              <input formControlName="createAtTo" matInput [min]="createAtFrom" [matDatepicker]="createAtTo">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matSuffix [for]="createAtTo"></mat-datepicker-toggle>
+              <mat-datepicker #createAtTo></mat-datepicker>
+            </mat-form-field>
+          </div>
         </div>
-    </div>
-    <form class="search-form">
-        <mat-form-field class="example-full-width" appearance="fill">
-            <mat-label>Search</mat-label>
-            <input type="text" placeholder="Key work" aria-label="Number" matInput>
-        </mat-form-field>
+        <div class="row">
+          <div class="col-12 col-md-12 col-xl-3">
+            <mat-form-field class="w-100" appearance="fill">
+              <mat-label>Email</mat-label>
+              <input formControlName="email" placeholder="Search email..." matInput>
+            </mat-form-field>
+          </div>
+          <div class="col-12 col-md-12 col-xl-3">
+          </div>
+          <div class="col-12 col-md-12 col-xl-6"></div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="action-button d-flex justify-content-end">
+              <div class="search pr-3">
+                <button class="btn btn-primary" (click)="onSearch()">Search</button>
+              </div>
+              <div class="create-user">
+                <button class="btn btn-success">New user</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </form>
-    <div class="table-lecturer">
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  </div>
+  <div class="table-user">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef (click)="onSortColumn(getSortColum().fullName)">
+          <div>Full name
+            <span *ngIf="sortFilter.sortColumn === getSortColum().fullName">
+              <kendo-icon *ngIf="!sortFilter.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
+              <kendo-icon *ngIf="sortFilter.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
+            </span>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
+      </ng-container>
 
-            <!--- Note that these columns can be defined in any order.
-                The actual rendered columns are set as a property on the row definition" -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef (click)="onSortColumn(getSortColum().email)">
+          <div>Email
+            <span *ngIf="sortFilter.sortColumn === getSortColum().email">
+              <kendo-icon *ngIf="!sortFilter.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
+              <kendo-icon *ngIf="sortFilter.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
+            </span>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container>
 
-            <!-- Position Column -->
-            <ng-container matColumnDef="position">
-                <th mat-header-cell *matHeaderCellDef> No. </th>
-                <td mat-cell *matCellDef="let element"> {{element.position}} </td>
-            </ng-container>
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef (click)="onSortColumn(getSortColum().role)">
+          <div>Role
+            <span *ngIf="sortFilter.sortColumn === getSortColum().role">
+              <kendo-icon *ngIf="!sortFilter.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
+              <kendo-icon *ngIf="sortFilter.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
+            </span>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+      </ng-container>
 
-            <!-- Name Column -->
-            <ng-container matColumnDef="fullname">
-                <th mat-header-cell *matHeaderCellDef> Name </th>
-                <td mat-cell *matCellDef="let element"> {{element.fullname}} </td>
-            </ng-container>
-            <!-- email Column -->
-            <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef> Email </th>
-                <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-            </ng-container>
-            <!-- role Column -->
-            <ng-container matColumnDef="role">
-                <th mat-header-cell *matHeaderCellDef> Role </th>
-                <td mat-cell *matCellDef="let element"> {{element.role}} </td>
-            </ng-container>
-            <!-- create at Column -->
-            <ng-container matColumnDef="create_at">
-                <th mat-header-cell *matHeaderCellDef> Create at </th>
-                <td mat-cell *matCellDef="let element"> {{element.create_at}} </td>
-            </ng-container>
-            <!-- status Column -->
-            <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef> Status </th>
-                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-            </ng-container>
-            <ng-container matColumnDef="preview">
-                <th mat-header-cell *matHeaderCellDef> Preview </th>
-                <td mat-cell *matCellDef="let element">
-                    <a class="preview" (click)="preview()">
-                        <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="2em"
-                            width="2em" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="none" stroke="#000" stroke-width="2"
-                                d="M12,17 C9.27272727,17 6,14.2222222 6,12 C6,9.77777778 9.27272727,7 12,7 C14.7272727,7 18,9.77777778 18,12 C18,14.2222222 14.7272727,17 12,17 Z M11,12 C11,12.55225 11.44775,13 12,13 C12.55225,13 13,12.55225 13,12 C13,11.44775 12.55225,11 12,11 C11.44775,11 11,11.44775 11,12 Z">
-                            </path>
-                        </svg>
-                    </a>
-                </td>
-            </ng-container>
+      <ng-container matColumnDef="createAt">
+        <th mat-header-cell *matHeaderCellDef (click)="onSortColumn(getSortColum().createAt)">
+          <div>Create at
+            <span *ngIf="sortFilter.sortColumn === getSortColum().createAt">
+              <kendo-icon *ngIf="!sortFilter.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
+              <kendo-icon *ngIf="sortFilter.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
+            </span>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element"> {{element.createAt}} </td>
+      </ng-container>
 
-            <ng-container matColumnDef="edit">
-                <th mat-header-cell *matHeaderCellDef> Edit </th>
-                <td mat-cell *matCellDef="let element">
-                    <a (click)="edit()"> <svg stroke="currentColor" fill="currentColor" stroke-width="0"
-                            viewBox="0 0 24 24" height="2em" width="2em" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="none" d="M0 0h24v24H0z"></path>
-                            <path
-                                d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75zM20.71 5.63l-2.34-2.34a.996.996 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83a.996.996 0 000-1.41z">
-                            </path>
-                        </svg></a>
-                </td>
-            </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef (click)="onSortColumn(getSortColum().status)">
+          <div>Status
+            <span *ngIf="sortFilter.sortColumn === getSortColum().status">
+              <kendo-icon *ngIf="!sortFilter.isDescendingSort" name="arrow-up" size="medium"></kendo-icon>
+              <kendo-icon *ngIf="sortFilter.isDescendingSort" name="arrow-down" size="medium"></kendo-icon>
+            </span>
+          </div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.status === 'Banned'" class="btn btn-outline-danger status">{{element.status}}</span>
+          <span *ngIf="element.status === 'Active'" class="btn btn-outline-success status">{{element.status}}</span>
+          <span *ngIf="element.status === 'Inactive'" class="btn btn-outline-secondary status">{{element.status}}</span>
+        </td>
+      </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-        </table>
-    </div>
+      <ng-container matColumnDef="preview">
+        <th mat-header-cell *matHeaderCellDef> Preview </th>
+        <td mat-cell *matCellDef="let element">
+          <kendo-icon name="preview" size="medium"></kendo-icon>
+        </td>
+      </ng-container>
 
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef> Edit </th>
+        <td mat-cell *matCellDef="let element">
+          <kendo-icon name="edit" size="medium"></kendo-icon>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  <kendo-datapager [total]="totalData" [pageSize]="pageSize" [skip]="skip" (pageChange)="onPageChange($event)">
+  </kendo-datapager>
 </div>

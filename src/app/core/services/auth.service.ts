@@ -3,56 +3,43 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { LocalStorageService } from './localStorage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedIn$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public loggedIn$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public isLoggedIn$ = this.loggedIn$.asObservable();
   private REST_API_SERVER = environment.api;
 
-  constructor(private httpClient: HttpClient, private router: Router) {
-    const token = localStorage.getItem('token');
+  constructor(private httpClient: HttpClient, private router: Router, private localStorageService: LocalStorageService) {
+    const token = this.localStorageService.getItem('token');
     this.loggedIn$.next(!!token);
   }
 
   getHeaders() {
-    const token = localStorage.getItem('token');
+    const token = this.localStorageService.getItem('token');
     return token ? new HttpHeaders().set('Authorization', 'Bearer ' + token) : null;
   }
 
-  setToken(token: string) {
-    localStorage.setItem('token', token);
-  }
-
-  removeToken() {
-    localStorage.removeItem('token');
-  }
-
-  getToken() {
-    return localStorage.getItem('token');
-  }
-
   public logout() {
-    this.removeToken();
+    this.localStorageService.removeAll();
     this.loggedIn$.next(false);
     this.router.navigate(['']);
   }
 
-  public login(account: any): void {
-    if (account) {
-      this.loggedIn$.next(true);
-      this.setToken(account.userName)
-      this.router.navigate(['/home']);
-    }
-  }
-
   public getProfile(userName: string): Observable<any> {
     let headers = this.getHeaders();
-    const url = `${this.REST_API_SERVER}/api/Account/` + userName;
+    const url = `${this.REST_API_SERVER}/auth/user-profile/` + userName;
     if (headers instanceof HttpHeaders)
       return this.httpClient.get<any>(url, { headers: headers });
     return this.httpClient.get<any>(url);
+  }
+
+  public logIn(userName: string, passWord: string): Observable<any> {
+    const user = { username: userName, password: passWord }
+    const url = `${this.REST_API_SERVER}/auth/login`;
+    return this.httpClient.post<any>(url, user);
   }
 }

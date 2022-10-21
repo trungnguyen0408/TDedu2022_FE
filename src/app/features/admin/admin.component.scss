@@ -1,24 +1,22 @@
 .admin-page {
   padding: 30px;
 
-  .search-form {
-    padding-top: 20px;
-
-    .mat-form-field {
-      width: 100%;
-    }
+  .action {
+    border: 2px solid #d3d3d3;
+    padding: 15px;
   }
 
   .table-user {
-    padding-top: 20px;
+    padding-top: 60px;
 
     table {
       width: 100%;
 
       th.mat-header-cell {
         cursor: pointer;
-        font-size: medium;
+        font-size: 18px;
         font-weight: bold;
+        color: #0489df;
       }
 
       .mat-column-fullname,
@@ -59,14 +57,6 @@
 
   .k-i-arrow-up,
   .k-i-arrow-down {
-    color: #0d9ee6;
-  }
-
-  .k-i-edit {
-    color: #f6a652;
-  }
-
-  .k-i-trash {
-    color: #dd1923;
+    color: #0489df;
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { LocalStorageService } from '../../services/localStorage.service';
 
 @Component({
   selector: 'app-nav',
@@ -9,11 +10,17 @@ import { AuthService } from '../../services/auth.service';
 })
 export class NavComponent implements OnInit {
 
-  constructor(public authService: AuthService) { }
+  constructor(public authService: AuthService, public localStorageService: LocalStorageService, private router: Router) { }
 
-  public ngOnInit() {}
+  public ngOnInit() { }
 
   public onLogout() {
-    this.authService.logout();
+    this.authService.logOut().subscribe(data => {
+      if (data) {
+        this.localStorageService.removeAll();
+        this.authService.loggedIn$.next(false);
+        this.router.navigate(['']);
+      }
+    });
   }
 }

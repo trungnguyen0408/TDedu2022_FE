@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { RegisterComponent } from '../register/register.component';
-import { ErrorStateMatcher } from '@angular/material/core';
 import { LocalStorageService } from '../../services/localStorage.service';
 import { AlertMessageService } from '../../services/alert-message.service';
 
@@ -45,8 +44,9 @@ export class LoginComponent implements OnInit {
           this.authService.loggedIn$.next(true);
           this.localStorageService.setToken(data.access_token);
           this.localStorageService.setItem("role", data.role[0]);
+          this.localStorageService.setItem("usercurrent", data.user.username);
           this.router.navigate(['/home']);
-        }, 2000);
+        }, 1000);
       }
     }, (err) => {
       this.loginForm.reset();

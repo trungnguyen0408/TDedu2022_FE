@@ -1,0 +1,81 @@
+<h1 mat-dialog-title>User Profile</h1>
+<div mat-dialog-content>
+  <mat-tab-group dynamicHeight>
+    <mat-tab label="Information">
+      <div class="example-large-box mat-elevation-z4">
+        <div class="container">
+          <div class="row pt-3">
+            <div class="col-12 col-md-4 col-xl-4">
+              <kendo-label class="label-custom" text="Full Name"></kendo-label>
+              <input kendoTextBox readonly />
+            </div>
+            <div class="col-12 col-md-4 col-xl-4">
+              <kendo-label class="label-custom" text="User Name"></kendo-label>
+              <input kendoTextBox readonly />
+            </div>
+            <div class="col-12 col-md-4 col-xl-4">
+              <kendo-label class="label-custom" text="Email"></kendo-label>
+              <input kendoTextBox readonly />
+            </div>
+          </div>
+          <div class="row pt-3">
+            <div class="col-12 col-md-4 col-xl-4">
+              <kendo-label class="label-custom" text="Phone"></kendo-label>
+              <input kendoTextBox readonly />
+            </div>
+            <div class="col-12 col-md-4 col-xl-4">
+              <kendo-label class="label-custom" text="Date of birth"></kendo-label>
+              <input kendoTextBox readonly />
+            </div>
+            <div class="col-12 col-md-4 col-xl-4">
+              <kendo-label class="label-custom" text="Address"></kendo-label>
+              <input kendoTextBox readonly />
+            </div>
+          </div>
+          <div class="row pt-3">
+            <div class="col-12 col-md-4 col-xl-4">
+              <kendo-label class="label-custom" text="Gender"></kendo-label>
+              <input kendoTextBox readonly />
+            </div>
+            <div class="col-12 col-md-4 col-xl-4">
+              <kendo-label class="label-custom" text="Status"></kendo-label>
+              <input kendoTextBox readonly />
+            </div>
+            <div class="col-12 col-md-4 col-xl-4">
+              <kendo-label class="label-custom" text="Duration"></kendo-label>
+              <input kendoTextBox readonly />
+            </div>
+          </div>
+          <div class="row py-3">
+            <div class="col-12 col-md-8 col-xl-8">
+              <kendo-label class="label-custom" text="Reason Ban"></kendo-label>
+              <kendo-textarea [readonly]="true">
+              </kendo-textarea>
+            </div>
+            <div class="col-12 col-md-4 col-xl-4"></div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Ban history">
+      <div class="example-large-box mat-elevation-z4">
+        <h2>User Name</h2>
+        <div>Banned</div>
+        <div class="content">
+          content 1
+          content 2
+          content 3
+        </div>
+        <div class="content">
+          content 4
+          content 5
+          content 6
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+
+</div>
+<div mat-dialog-actions align="center">
+  <button class="btn btn-primary" [mat-dialog-close]="true" cdkFocusInitial>Ok</button>
+</div>

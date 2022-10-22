@@ -23,15 +23,9 @@ export class AuthService {
     return token ? new HttpHeaders().set('Authorization', 'Bearer ' + token) : null;
   }
 
-  public logout() {
-    this.localStorageService.removeAll();
-    this.loggedIn$.next(false);
-    this.router.navigate(['']);
-  }
-
-  public getProfile(userName: string): Observable<any> {
+  public getProfile(): Observable<any> {
     let headers = this.getHeaders();
-    const url = `${this.REST_API_SERVER}/auth/user-profile/` + userName;
+    const url = `${this.REST_API_SERVER}/auth/user-profile`;
     if (headers instanceof HttpHeaders)
       return this.httpClient.get<any>(url, { headers: headers });
     return this.httpClient.get<any>(url);
@@ -41,5 +35,13 @@ export class AuthService {
     const user = { username: userName, password: passWord }
     const url = `${this.REST_API_SERVER}/auth/login`;
     return this.httpClient.post<any>(url, user);
+  }
+
+  public logOut(): Observable<any> {
+    let headers = this.getHeaders();
+    const url = `${this.REST_API_SERVER}/auth/logout`;
+    if (headers instanceof HttpHeaders)
+      return this.httpClient.post<any>(url, null, { headers: headers });
+    return this.httpClient.post<any>(url, null);
   }
 }

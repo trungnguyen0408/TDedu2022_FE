@@ -5,7 +5,7 @@ import { MatSnackBar, MatSnackBarConfig, MatSnackBarHorizontalPosition, MatSnack
     providedIn: 'root',
 })
 export class AlertMessageService {
-    private defaultDuration = 2000;
+    private defaultDuration = 3000;
     private verticalPosition: MatSnackBarVerticalPosition = 'top';
     private horizontalPosition: MatSnackBarHorizontalPosition = 'center';
     actionButtonLabel: string = 'x';

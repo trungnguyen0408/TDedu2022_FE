@@ -6,6 +6,8 @@ import { PageChangeEvent } from '@progress/kendo-angular-pager';
 import { SortColumn } from 'src/app/core/enums/sort-column';
 import { SortFilter } from 'src/app/core/models/sort-filter';
 import * as moment from 'moment';
+import { MatDialog } from '@angular/material/dialog';
+import { PreviewPageComponent } from '../preview-page/preview-page.component';
 
 @Component({
   selector: 'app-admin',
@@ -59,7 +61,7 @@ export class AdminComponent implements OnInit {
   { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
   { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Inactive' }];
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor(private formBuilder: FormBuilder, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.dataSource.data = this.dataTest;
@@ -113,5 +115,11 @@ export class AdminComponent implements OnInit {
     this.skip = e.skip;
     this.pageSize = e.take;
     this.pageIndex = this.skip / this.pageSize;
+  }
+
+  onPreview() {
+    this.dialog.open(PreviewPageComponent, {
+      data: '123'
+    })
   }
 }

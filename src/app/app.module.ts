@@ -8,18 +8,18 @@ import { LoginComponent } from './core/components/login/login.component';
 import { RegisterComponent } from './core/components/register/register.component';
 import { HomeComponent } from './features/home/home.component';
 import { AdminComponent } from './features/admin/admin.component';
+import { PreviewPageComponent } from './features/preview-page/preview-page.component';
+import { NavComponent } from './core/components/nav/nav.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material/icon';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSliderModule } from '@angular/material/slider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTableModule } from '@angular/material/table';
-import { NavComponent } from './core/components/nav/nav.component';
 import { MatListModule } from '@angular/material/list';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -31,6 +31,9 @@ import { FormsModule } from '@angular/forms';
 import { IconsModule } from "@progress/kendo-angular-icons";
 import { PagerModule } from '@progress/kendo-angular-pager';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
+import { LabelModule } from "@progress/kendo-angular-label";
+import { InputsModule } from "@progress/kendo-angular-inputs";
 
 @NgModule({
   declarations: [
@@ -41,6 +44,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     RegisterComponent,
     HomeComponent,
     AdminComponent,
+    PreviewPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,7 +54,6 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatInputModule,
     MatSidenavModule,
     MatToolbarModule,
-    MatIconModule,
     MatCheckboxModule,
     BrowserAnimationsModule,
     MatTableModule,
@@ -65,7 +68,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     FormsModule,
     IconsModule,
     PagerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTabsModule,
+    InputsModule,
+    LabelModule
   ],
   providers: [],
   bootstrap: [AppComponent]

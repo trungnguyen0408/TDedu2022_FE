@@ -58,19 +58,18 @@
       </div>
     </mat-tab>
     <mat-tab label="Ban history">
-      <div class="example-large-box mat-elevation-z4">
-        <h2>User Name</h2>
-        <div>Banned</div>
-        <div class="content">
-          content 1
-          content 2
-          content 3
+      <div class="banned-box example-large-box mat-elevation-z4">
+        <div class="title px-3">
+          <h2>User Name</h2>
         </div>
-        <div class="content">
-          content 4
-          content 5
-          content 6
-        </div>
+        <h5 class="label-custom">Banned</h5>
+        <cdk-virtual-scroll-viewport appendOnly itemSize="50" class="example-viewport">
+          <div *cdkVirtualFor="let item of items" class="example-item">
+            <p>Time: {{item}}</p>
+            <p>Ban Duration: {{item}}</p>
+            <p>Resion: {{item}}</p>
+          </div>
+        </cdk-virtual-scroll-viewport>
       </div>
     </mat-tab>
   </mat-tab-group>

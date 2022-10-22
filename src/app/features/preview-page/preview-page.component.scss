@@ -10,7 +10,22 @@
   width: 95%;
 }
 
+.banned-box {
+  min-height: 320px;
+  min-width: 825px;
+}
+
 .label-custom {
   font-weight: bold;
   color: #656565;
+}
+
+.example-viewport {
+  height: 70%;
+  width: 100%;
+  border: 2px solid #d3d3d3;
+}
+
+.example-item {
+  padding: 20px 10px;
 }

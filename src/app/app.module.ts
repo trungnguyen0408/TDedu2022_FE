@@ -34,6 +34,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { LabelModule } from "@progress/kendo-angular-label";
 import { InputsModule } from "@progress/kendo-angular-inputs";
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
     MatSnackBarModule,
     MatTabsModule,
     InputsModule,
-    LabelModule
+    LabelModule,
+    ScrollingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

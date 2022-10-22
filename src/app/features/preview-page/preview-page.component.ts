@@ -7,7 +7,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrls: ['./preview-page.component.scss']
 })
 export class PreviewPageComponent implements OnInit {
-
+  items = Array.from({ length: 20 }).map((_, i) => `Item #${i}`);
   constructor(public dialogRef: MatDialogRef<PreviewPageComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 

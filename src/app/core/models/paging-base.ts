@@ -1,4 +1,4 @@
-export interface PagingBase {
-  pageSize: number,
-  pageIndex: number
+export class PagingBase {
+  pageSize: number = 0;
+  pageIndex: number = 0;
 }

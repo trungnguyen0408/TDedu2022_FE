@@ -35,6 +35,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { LabelModule } from "@progress/kendo-angular-label";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     MatTabsModule,
     InputsModule,
     LabelModule,
-    ScrollingModule
+    ScrollingModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

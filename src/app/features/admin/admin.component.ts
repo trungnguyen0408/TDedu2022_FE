@@ -1,6 +1,6 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageChangeEvent } from '@progress/kendo-angular-pager';
 import { SortColumn } from 'src/app/core/enums/sort-column';
@@ -8,6 +8,12 @@ import { SortFilter } from 'src/app/core/models/sort-filter';
 import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { PreviewPageComponent } from '../preview-page/preview-page.component';
+import { UserStatus } from 'src/app/core/constants/user-status-constant';
+import { FilterUser } from 'src/app/core/models/filter-user';
+import { UserRole } from 'src/app/core/constants/user-role-constant';
+import { AlertMessageService } from 'src/app/core/services/alert-message.service';
+import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
+import { LoadingService } from 'src/app/core/services/loading.service';
 
 @Component({
   selector: 'app-admin',
@@ -17,17 +23,7 @@ import { PreviewPageComponent } from '../preview-page/preview-page.component';
 export class AdminComponent implements OnInit {
   displayedColumns: string[] = ['select', 'fullName', 'email', 'role', 'createAt', 'status', 'preview', 'edit', 'del'];
   dataSource = new MatTableDataSource<any>();
-  form = this.formBuilder.group({
-    fullName: [''],
-    email: [''],
-    status: ['All'],
-    role: [''],
-    createAtFrom: [''],
-    createAtTo: [''],
-  });
-  sortFilter: SortFilter = {
-    sortColumn: SortColumn.none,
-  };
+  form: FormGroup;
   fullName: string = '';
   email: string = '';
   status: string = '';
@@ -38,17 +34,14 @@ export class AdminComponent implements OnInit {
   pageSize: number = 10;
   pageIndex: number = 1;
   totalData: number = 0;
+  sortFilter: SortFilter = {
+    sortColumn: SortColumn.none,
+    isDescendingSort: true,
+  };
   selectionUser = new SelectionModel<any>(true, []);
-  listStatus: Array<string> = [
-    "All",
-    "Active",
-    "Inactive",
-    "Banned",
-  ];
-  public listRole: Array<string> = [
-    "Lecturer",
-    "Student",
-  ];
+  listStatus = UserStatus.Status;
+  defaultItem: { text: string, value: string } = { text: 'All', value: '' };
+  listRole = UserRole.Status;
 
   dataTest: any[] = [{ fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
   { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
@@ -61,7 +54,16 @@ export class AdminComponent implements OnInit {
   { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
   { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Inactive' }];
 
-  constructor(private formBuilder: FormBuilder, public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private alertMessageService: AlertMessageService, private loading: LoadingService) {
+    this.form = new FormGroup({
+      fullName: new FormControl(this.fullName),
+      email: new FormControl(this.email),
+      status: new FormControl(this.status),
+      role: new FormControl(this.role),
+      createAtFrom: new FormControl(this.createAtFrom),
+      createAtTo: new FormControl(this.createAtTo)
+    });
+  }
 
   ngOnInit(): void {
     this.dataSource.data = this.dataTest;
@@ -73,6 +75,7 @@ export class AdminComponent implements OnInit {
   }
 
   onSearch() {
+    this.handleGetUser();
   }
 
   onSortColumn(sortField: SortColumn) {
@@ -121,5 +124,51 @@ export class AdminComponent implements OnInit {
     this.dialog.open(PreviewPageComponent, {
       data: '123'
     })
+  }
+
+  handleGetUser() {
+    if (this.isUserInputCreateAt()) {
+      if (this.createAtFrom == null || this.createAtTo == null) {
+        this.alertMessageService.error(APP_MESSAGE.SEARCH_CREATEAT_NOT_INPUT_DATE_RANGE);
+        return;
+      }
+
+      if (this.createAtFrom.getTime() > this.createAtTo.getTime()) {
+        this.alertMessageService.error(APP_MESSAGE.SEARCH_CREATEAT_DATE_FROM_BIGGER_DATE_TO);
+        return;
+      }
+    }
+
+    const filter = new FilterUser();
+
+    filter.fullName = this.getFormValue('fullName');
+    filter.email = this.getFormValue('email');
+    filter.status = this.getFormValue('status');
+    filter.role = this.getFormValue('role');
+    filter.createAtFrom = this.formatDateCreateAt(this.getFormValue('createAtFrom'));
+    filter.createAtTo = this.formatDateCreateAt(this.getFormValue('createAtTo'));
+    filter.pageIndex = this.pageIndex;
+    filter.pageSize = this.pageSize;
+    filter.sortColumn = this.sortFilter.sortColumn;
+    filter.isDescendingSort = this.sortFilter.isDescendingSort;
+
+    this.getUserByFilter(filter);
+  }
+
+  getUserByFilter(filter: FilterUser) {
+    //call api get by filter
+    this.loading.show();
+    setTimeout(() => {
+
+      this.loading.hide();
+    }, 2000);
+  }
+
+  getFormValue(name: string) {
+    return this.form.get(name)?.value ?? '';
+  }
+
+  isUserInputCreateAt(): boolean {
+    return this.createAtFrom != null || this.createAtTo != null ? true : false;
   }
 }

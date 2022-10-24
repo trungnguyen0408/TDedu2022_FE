@@ -5,15 +5,22 @@
       <mat-list-option routerLink="/home" routerLinkActive="active">
         Home
       </mat-list-option>
-      <mat-list-option *ngIf="localStorageService.getItem('role') === getRole().superAdmin" routerLink="/admin" routerLinkActive="active">
+      <mat-list-option *ngIf="localStorageService.getItem('role') === getRole().superAdmin" routerLink="/admin"
+        routerLinkActive="active">
         User
       </mat-list-option>
-      <mat-list-option *ngIf="localStorageService.getItem('role') === getRole().lecturer" routerLink="/lecturer" routerLinkActive="active">
+      <mat-list-option *ngIf="localStorageService.getItem('role') === getRole().lecturer" routerLink="/lecturer"
+        routerLinkActive="active">
         User
       </mat-list-option>
     </mat-selection-list>
   </mat-drawer>
   <mat-drawer-content [ngClass]="'authService.isLoggedIn$ | async as isLoggedIn'?' ' :'main-contet'">
     <router-outlet></router-outlet>
+    <ng-container *ngIf="isLoading | async">
+      <div class="overlay">
+        <mat-progress-spinner [mode]="'indeterminate'"></mat-progress-spinner>
+      </div>
+    </ng-container>
   </mat-drawer-content>
 </mat-drawer-container>

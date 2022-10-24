@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { RegisterComponent } from '../register/register.component';
 import { LocalStorageService } from '../../services/localStorage.service';
 import { AlertMessageService } from '../../services/alert-message.service';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ import { AlertMessageService } from '../../services/alert-message.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  constructor(private alertMessageService: AlertMessageService, public dialog: MatDialog, private authService: AuthService, private formBuilder: FormBuilder, private router: Router, private localStorageService: LocalStorageService) {
+  constructor(private loading: LoadingService, private alertMessageService: AlertMessageService, public dialog: MatDialog, private authService: AuthService, private formBuilder: FormBuilder, private router: Router, private localStorageService: LocalStorageService) {
     if (authService.isLoggedIn$) {
       this.router.navigate(['/home']);
     }
@@ -36,20 +37,20 @@ export class LoginComponent implements OnInit {
   onLogin() {
     const userName = this.loginForm.value.userName;
     const passWord = this.loginForm.value.passWord;
-
+    this.loading.show();
     this.authService.logIn(userName, passWord).subscribe(data => {
       if (data) {
+        this.authService.loggedIn$.next(true);
+        this.localStorageService.setToken(data.access_token);
+        this.localStorageService.setItem("role", data.role[0]);
+        this.localStorageService.setItem("usercurrent", data.user.username);
+        this.router.navigate(['/home']);
         this.alertMessageService.success("Login successfull")
-        setTimeout(() => {
-          this.authService.loggedIn$.next(true);
-          this.localStorageService.setToken(data.access_token);
-          this.localStorageService.setItem("role", data.role[0]);
-          this.localStorageService.setItem("usercurrent", data.user.username);
-          this.router.navigate(['/home']);
-        }, 1000);
+        this.loading.hide();
       }
     }, (err) => {
       this.loginForm.reset();
+      this.loading.hide();
       if (err.error.username && err.error.password) {
         this.alertMessageService.error(`${err.error.username} / ${err.error.password}`);
         return

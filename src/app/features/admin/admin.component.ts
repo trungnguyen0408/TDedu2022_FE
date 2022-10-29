@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageChangeEvent } from '@progress/kendo-angular-pager';
@@ -11,16 +11,15 @@ import { PreviewPageComponent } from '../preview-page/preview-page.component';
 import { UserStatus } from 'src/app/core/constants/user-status-constant';
 import { FilterUser } from 'src/app/core/models/filter-user';
 import { UserRole } from 'src/app/core/constants/user-role-constant';
-import { AlertMessageService } from 'src/app/core/services/alert-message.service';
 import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
-import { LoadingService } from 'src/app/core/services/loading.service';
+import { BaseComponent } from 'src/app/core/components/base.component';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent extends BaseComponent implements OnInit {
   displayedColumns: string[] = ['select', 'fullName', 'email', 'role', 'createAt', 'status', 'preview', 'edit', 'del'];
   dataSource = new MatTableDataSource<any>();
   form: FormGroup;
@@ -54,7 +53,8 @@ export class AdminComponent implements OnInit {
   { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
   { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Inactive' }];
 
-  constructor(public dialog: MatDialog, private alertMessageService: AlertMessageService, private loading: LoadingService) {
+  constructor(injector: Injector, public dialog: MatDialog) {
+    super(injector);
     this.form = new FormGroup({
       fullName: new FormControl(this.fullName),
       email: new FormControl(this.email),
@@ -157,10 +157,10 @@ export class AdminComponent implements OnInit {
 
   getUserByFilter(filter: FilterUser) {
     //call api get by filter
-    this.loading.show();
+    this.showLoader();
     setTimeout(() => {
 
-      this.loading.hide();
+      this.showLoader(false);
     }, 2000);
   }
 

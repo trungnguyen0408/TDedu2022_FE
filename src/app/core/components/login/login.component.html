@@ -12,6 +12,7 @@
 
       <button class="login-button" type="submit" [disabled]="!loginForm.valid">login</button>
       <p class="message">Not registered? <a class="create-account" (click)="openDialog()">Create an account</a></p>
+      <a class="create-account" (click)="openDialog(true)">Forgot password?</a>
     </form>
   </div>
 </div>

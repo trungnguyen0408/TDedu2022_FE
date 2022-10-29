@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { User } from '../models/user';
 import { LocalStorageService } from './localStorage.service';
 
 @Injectable({
@@ -43,5 +44,24 @@ export class AuthService {
     if (headers instanceof HttpHeaders)
       return this.httpClient.post<any>(url, null, { headers: headers });
     return this.httpClient.post<any>(url, null);
+  }
+
+  public forgotPassword(inputValue: string): Observable<any> {
+    const url = `${this.REST_API_SERVER}/auth/send-reset-password`;
+    return this.httpClient.post<any>(url, inputValue);
+  }
+
+  public registerUser(user: User): Observable<any> {
+    const value = {
+      full_name: user.full_name,
+      username: user.userName,
+      email: user.email,
+      mobile_phone: user.mobile_phone,
+      gender: user.gender,
+      password: user.password,
+      password_confirmation: user.password_confirmation
+    }
+    const url = `${this.REST_API_SERVER}/auth/register`;
+    return this.httpClient.post<any>(url, value);
   }
 }

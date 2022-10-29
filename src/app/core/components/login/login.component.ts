@@ -1,20 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { RegisterComponent } from '../register/register.component';
 import { LocalStorageService } from '../../services/localStorage.service';
-import { AlertMessageService } from '../../services/alert-message.service';
-import { LoadingService } from '../../services/loading.service';
+import { BaseComponent } from '../base.component';
+import { finalize } from 'rxjs';
+import { APP_MESSAGE } from '../../constants/app-message-constant';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
-  constructor(private loading: LoadingService, private alertMessageService: AlertMessageService, public dialog: MatDialog, private authService: AuthService, private formBuilder: FormBuilder, private router: Router, private localStorageService: LocalStorageService) {
+export class LoginComponent extends BaseComponent implements OnInit {
+  constructor(injector: Injector, public dialog: MatDialog, private authService: AuthService, private formBuilder: FormBuilder, private router: Router, private localStorageService: LocalStorageService) {
+    super(injector);
     if (authService.isLoggedIn$) {
       this.router.navigate(['/home']);
     }
@@ -28,38 +30,50 @@ export class LoginComponent implements OnInit {
     passWord: ['', Validators.required]
   });
 
-  openDialog() {
-    const dialogRef = this.dialog.open(RegisterComponent, {
-      width: '500px'
-    });
+  openDialog(isForgot: boolean = false) {
+    if (isForgot) {
+      this.dialog.open(RegisterComponent, {
+        width: '600px',
+        data: 'isForgot'
+      });
+    } else {
+      this.dialog.open(RegisterComponent, {
+        width: '500px',
+        data: 'isRegister'
+      });
+    }
+
   }
 
   onLogin() {
     const userName = this.loginForm.value.userName;
     const passWord = this.loginForm.value.passWord;
-    this.loading.show();
-    this.authService.logIn(userName, passWord).subscribe(data => {
-      if (data) {
-        this.authService.loggedIn$.next(true);
-        this.localStorageService.setToken(data.access_token);
-        this.localStorageService.setItem("role", data.role[0]);
-        this.localStorageService.setItem("usercurrent", data.user.username);
-        this.router.navigate(['/home']);
-        this.alertMessageService.success("Login successfull")
-        this.loading.hide();
-      }
-    }, (err) => {
-      this.loginForm.reset();
-      this.loading.hide();
-      if (err.error.username && err.error.password) {
-        this.alertMessageService.error(`${err.error.username} / ${err.error.password}`);
-        return
-      }
-      if (err.error.username) {
-        this.alertMessageService.error(err.error.username);
-      } else {
-        this.alertMessageService.error(err.error.password);
-      }
-    })
+    this.showLoader();
+    this.authService.logIn(userName, passWord).pipe(finalize(() => {
+      this.showLoader(false);
+    }))
+      .subscribe(data => {
+        if (data) {
+          this.authService.loggedIn$.next(true);
+          this.localStorageService.setToken(data.access_token);
+          this.localStorageService.setItem("role", data.role[0]);
+          this.localStorageService.setItem("user_current", data.user.username);
+          this.router.navigate(['/home']);
+          this.alertMessageService.success(APP_MESSAGE.LOGIN_SUCCESSFULL);
+        }
+      }, (err) => {
+        this.loginForm.reset();
+        if (err.error.username && err.error.password) {
+          this.alertMessageService.error(`${err.error.username} / ${err.error.password}`);
+          return
+        }
+        if (err.error.username) {
+          this.alertMessageService.error(err.error.username);
+        } else {
+          this.alertMessageService.error(err.error.password);
+        }
+      })
+  }
+  onForgotPassword() {
   }
 }

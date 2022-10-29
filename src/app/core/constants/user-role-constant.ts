@@ -1,11 +1,11 @@
 export const UserRoleConstants = {
-  Student: 'Student',
-  Lecturer: 'Lecturer'
+  STUDENT: 'Student',
+  LECTURER: 'Lecturer'
 }
 
 export class UserRole {
-  static Status: Array<{ text: string; value: string }> = [
-    { text: UserRoleConstants.Student, value: UserRoleConstants.Student },
-    { text: UserRoleConstants.Lecturer, value: UserRoleConstants.Lecturer },
+  static Roles: Array<{ text: string; value: string }> = [
+    { text: UserRoleConstants.STUDENT, value: UserRoleConstants.STUDENT },
+    { text: UserRoleConstants.LECTURER, value: UserRoleConstants.LECTURER },
   ];
 }

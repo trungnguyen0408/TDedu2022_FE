@@ -13,6 +13,8 @@ import { FilterUser } from 'src/app/core/models/filter-user';
 import { UserRole } from 'src/app/core/constants/user-role-constant';
 import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
 import { BaseComponent } from 'src/app/core/components/base.component';
+import { AddOrEditUserOfAdminComponent } from './add-or-edit-user-of-admin/add-or-edit-user-of-admin.component';
+import { ActionType } from 'src/app/core/enums/action-type';
 
 @Component({
   selector: 'app-admin',
@@ -40,7 +42,7 @@ export class AdminComponent extends BaseComponent implements OnInit {
   selectionUser = new SelectionModel<any>(true, []);
   listStatus = UserStatus.Status;
   defaultItem: { text: string, value: string } = { text: 'All', value: '' };
-  listRole = UserRole.Status;
+  listRole = UserRole.Roles;
 
   dataTest: any[] = [{ fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
   { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
@@ -123,6 +125,18 @@ export class AdminComponent extends BaseComponent implements OnInit {
   onPreview() {
     this.dialog.open(PreviewPageComponent, {
       data: '123'
+    })
+  }
+
+  onEdit() {
+    this.dialog.open(AddOrEditUserOfAdminComponent, {
+      data: ActionType.edit
+    })
+  }
+
+  onCreate() {
+    this.dialog.open(AddOrEditUserOfAdminComponent, {
+      data: ActionType.add
     })
   }
 

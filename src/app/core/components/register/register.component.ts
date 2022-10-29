@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { finalize, Subject } from 'rxjs';
 import { Gender } from '../../enums/gender';
-import { User } from '../../models/user';
+import { RegisterUser } from '../../models/register-user';
 import { AuthService } from '../../services/auth.service';
 import { BaseComponent } from '../base.component';
 
@@ -39,7 +39,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   }
 
   onRegister(): void {
-    const user = new User();
+    const user = new RegisterUser();
     user.full_name = this.registerForm.value.fullName;
     user.userName = this.registerForm.value.userName;
     user.email = this.registerForm.value.email;

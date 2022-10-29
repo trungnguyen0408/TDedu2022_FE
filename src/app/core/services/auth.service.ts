@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { User } from '../models/user';
+import { RegisterUser } from '../models/register-user';
 import { LocalStorageService } from './localStorage.service';
 
 @Injectable({
@@ -51,7 +51,7 @@ export class AuthService {
     return this.httpClient.post<any>(url, inputValue);
   }
 
-  public registerUser(user: User): Observable<any> {
+  public registerUser(user: RegisterUser): Observable<any> {
     const value = {
       full_name: user.full_name,
       username: user.userName,

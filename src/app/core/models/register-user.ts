@@ -1,6 +1,6 @@
 import { Gender } from "../enums/gender";
 
-export class User {
+export class RegisterUser {
   full_name: string = '';
   userName: string = '';
   email: string = '';

@@ -10,6 +10,8 @@ import { HomeComponent } from './features/home/home.component';
 import { AdminComponent } from './features/admin/admin.component';
 import { PreviewPageComponent } from './features/preview-page/preview-page.component';
 import { NavComponent } from './core/components/nav/nav.component';
+import { AddOrEditUserOfLecturerComponent } from './features/lecturer/add-or-edit-user-of-lecturer/add-or-edit-user-of-lecturer.component';
+import { AddOrEditUserOfAdminComponent } from './features/admin/add-or-edit-user-of-admin/add-or-edit-user-of-admin.component';
 
 import { HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
@@ -47,6 +49,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     HomeComponent,
     AdminComponent,
     PreviewPageComponent,
+    AddOrEditUserOfLecturerComponent,
+    AddOrEditUserOfAdminComponent,
   ],
   imports: [
     BrowserModule,

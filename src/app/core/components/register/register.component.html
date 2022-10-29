@@ -1,51 +1,65 @@
-<h1>Register</h1>
-<mat-dialog-content class="register-content">
-  <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onRegister()">
-    <mat-form-field class="input-field" appearance="fill">
-      <mat-label>User Name</mat-label>
-      <input formControlName="userName" matInput placeholder="username" value="">
-    </mat-form-field>
-    <mat-form-field class="input-field" appearance="fill">
-      <mat-label>Full Name</mat-label>
-      <input formControlName="fullName" matInput placeholder="full name" value="">
-    </mat-form-field>
-    <mat-form-field class="input-field" appearance="fill">
-      <mat-label>Phone</mat-label>
-      <input formControlName="phone" matInput placeholder="phone" value="">
-    </mat-form-field>
-    <mat-form-field class="input-field" appearance="fill">
-      <mat-label>Email</mat-label>
-      <input formControlName="email" matInput placeholder="email" value="">
-    </mat-form-field>
-    <mat-form-field class="input-field pt-2" appearance="fill">
-      <mat-label>Password</mat-label>
-      <input formControlName="passWord" matInput type="password" placeholder="password" value="">
-    </mat-form-field>
-    <mat-form-field class="input-field pt-2" appearance="fill">
-      <mat-label>Confirm Password</mat-label>
-      <input formControlName="confirmPassword" matInput type="password" placeholder="confirm password" value="">
-    </mat-form-field>
-    <mat-form-field appearance="fill" class="pt-2 input-field">
-      <mat-label>Gender</mat-label>
-      <mat-select formControlName="gender">
-        <mat-option value="male">
-          Male
-        </mat-option>
-        <mat-option value="female">
-          Female
-        </mat-option>
-        <mat-option value="unknow">
-          Unknow
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="fill" class="input-field pt-2">
-      <mat-label>Day Of Birth</mat-label>
-      <input matInput formControlName="dob" [matDatepicker]="dp3" readonly>
-      <mat-hint>MM/DD/YYYY</mat-hint>
-      <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-      <mat-datepicker #dp3 disabled="false"></mat-datepicker>
-    </mat-form-field>
-    <button class="register-button mt-4" cdkFocusInitial type="submit">Create</button>
+<section *ngIf="data === 'isRegister'">
+  <h1 mat-dialog-title>Register</h1>
+  <mat-dialog-content class="register-content">
+    <form class="register-form" [formGroup]="registerForm" (ngSubmit)="onRegister()">
+      <mat-form-field class="input-field" appearance="fill">
+        <mat-label>User Name</mat-label>
+        <input formControlName="userName" matInput placeholder="username" value="">
+      </mat-form-field>
+      <mat-form-field class="input-field" appearance="fill">
+        <mat-label>Full Name</mat-label>
+        <input formControlName="fullName" matInput placeholder="full name" value="">
+      </mat-form-field>
+      <mat-form-field class="input-field" appearance="fill">
+        <mat-label>Phone</mat-label>
+        <input formControlName="phone" matInput placeholder="phone" value="">
+      </mat-form-field>
+      <mat-form-field class="input-field" appearance="fill">
+        <mat-label>Email</mat-label>
+        <input formControlName="email" matInput placeholder="email" value="">
+      </mat-form-field>
+      <mat-form-field class="input-field pt-2" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input formControlName="passWord" matInput type="password" placeholder="password" value="">
+      </mat-form-field>
+      <mat-form-field class="input-field pt-2" appearance="fill">
+        <mat-label>Confirm Password</mat-label>
+        <input formControlName="confirmPassword" matInput type="password" placeholder="confirm password" value="">
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="pt-2 input-field">
+        <mat-label>Gender</mat-label>
+        <mat-select formControlName="gender">
+          <mat-option [value]="getEnumGender().male">
+            Male
+          </mat-option>
+          <mat-option [value]="getEnumGender().female">
+            Female
+          </mat-option>
+          <mat-option [value]="getEnumGender().unknow">
+            Unknow
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="input-field pt-2">
+        <mat-label>Day Of Birth</mat-label>
+        <input matInput formControlName="dob" [matDatepicker]="dp3" readonly>
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+        <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+      </mat-form-field>
+      <button class="register-button mt-4" cdkFocusInitial type="submit">Create</button>
+    </form>
+  </mat-dialog-content>
+</section>
+<section *ngIf="data === 'isForgot'">
+  <form [formGroup]="forgotForm" (ngSubmit)="onForgot()">
+    <h1 mat-dialog-title>Forgot password</h1>
+    <mat-dialog-content>
+      <kendo-label class="label-custom" text="Please input your email or username"></kendo-label>
+      <input kendoTextBox formControlName="emailOrUserName" />
+    </mat-dialog-content>
+    <mat-dialog-actions align="center">
+      <button type="submit" class="btn btn-success" [disabled]="!forgotForm.valid">Send</button>
+    </mat-dialog-actions>
   </form>
-</mat-dialog-content>
+</section>

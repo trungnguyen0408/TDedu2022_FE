@@ -1,23 +1,22 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, OnInit } from '@angular/core';
+import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageChangeEvent } from '@progress/kendo-angular-pager';
 import * as moment from 'moment';
+import { BaseComponent } from 'src/app/core/components/base.component';
 import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
 import { UserStatus } from 'src/app/core/constants/user-status-constant';
 import { SortColumn } from 'src/app/core/enums/sort-column';
 import { FilterUser } from 'src/app/core/models/filter-user';
 import { SortFilter } from 'src/app/core/models/sort-filter';
-import { AlertMessageService } from 'src/app/core/services/alert-message.service';
-import { LoadingService } from 'src/app/core/services/loading.service';
 
 @Component({
   selector: 'app-lecturer',
   templateUrl: './lecturer.component.html',
   styleUrls: ['./lecturer.component.scss']
 })
-export class LecturerComponent implements OnInit {
+export class LecturerComponent extends BaseComponent implements OnInit {
 
   displayedColumns: string[] = ['fullName', 'email', 'role', 'createAt', 'status', 'preview', 'edit'];
   dataSource = new MatTableDataSource<any>();
@@ -50,7 +49,8 @@ export class LecturerComponent implements OnInit {
   { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
   { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Inactive' }];
 
-  constructor(private alertMessageService: AlertMessageService, private loading: LoadingService) {
+  constructor(injector: Injector) {
+    super(injector);
     this.form = new FormGroup({
       fullName: new FormControl(this.fullName),
       email: new FormControl(this.email),
@@ -106,10 +106,10 @@ export class LecturerComponent implements OnInit {
 
   getUserByFilter(filter: FilterUser) {
     //call api get by filter
-    this.loading.show();
+    this.showLoader();
     setTimeout(() => {
 
-      this.loading.hide();
+      this.showLoader(false);
     }, 2000);
   }
 

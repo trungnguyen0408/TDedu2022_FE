@@ -15,12 +15,12 @@ export class AuthService {
   private REST_API_SERVER = environment.api;
 
   constructor(private httpClient: HttpClient, private router: Router, private localStorageService: LocalStorageService) {
-    const token = this.localStorageService.getItem('token');
+    const token = this.localStorageService.getToken();
     this.loggedIn$.next(!!token);
   }
 
   getHeaders() {
-    const token = this.localStorageService.getItem('token');
+    const token = this.localStorageService.getToken();
     return token ? new HttpHeaders().set('Authorization', 'Bearer ' + token) : null;
   }
 
@@ -47,8 +47,21 @@ export class AuthService {
   }
 
   public forgotPassword(inputValue: string): Observable<any> {
+    let data = {
+      username: inputValue
+    }
     const url = `${this.REST_API_SERVER}/auth/send-reset-password`;
-    return this.httpClient.post<any>(url, inputValue);
+    return this.httpClient.post<any>(url, data);
+  }
+
+  public resetPassword(tokenTemp: string, newPassword: string, confirmPassWord: string): Observable<any> {
+    let data = {
+      token: tokenTemp,
+      password: newPassword,
+      password_confirmation: confirmPassWord,
+    }
+    const url = `${this.REST_API_SERVER}/auth/reset-password`;
+    return this.httpClient.put<any>(url, data);
   }
 
   public registerUser(user: RegisterUser): Observable<any> {
@@ -59,7 +72,8 @@ export class AuthService {
       mobile_phone: user.mobile_phone,
       gender: user.gender,
       password: user.password,
-      password_confirmation: user.password_confirmation
+      password_confirmation: user.password_confirmation,
+      date_of_birth: user.day_of_birth
     }
     const url = `${this.REST_API_SERVER}/auth/register`;
     return this.httpClient.post<any>(url, value);

@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { finalize, Subject } from 'rxjs';
+import { APP_MESSAGE } from '../../constants/app-message-constant';
 import { Gender } from '../../enums/gender';
 import { RegisterUser } from '../../models/register-user';
 import { AuthService } from '../../services/auth.service';
@@ -53,7 +54,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
     this.authService.registerUser(user).pipe(finalize(() => {
       this.showLoader(false);
     })).subscribe(() => {
-      this.alertMessageService.success("Register successfull");
+      this.alertMessageService.success(APP_MESSAGE.REGISTER_SUCCESSFULL);
       this.dialogRef.close();
 
     }, (err) => {
@@ -78,7 +79,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
       this.showLoader(false);
     })).subscribe(data => {
       if (data) {
-        //call api
+        this.alertMessageService.success(data.message);
       }
     })
     this.dialogRef.close();
@@ -87,7 +88,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   formatDateDateOfBirth(dayOfbirth?: Date) {
     let date = '';
     if (dayOfbirth) {
-      date = moment(new Date(dayOfbirth)).format("MM/DD/YYYY");
+      date = moment(new Date(dayOfbirth)).format("YYYY-MM-DD");
     }
     return date;
   }

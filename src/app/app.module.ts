@@ -38,6 +38,7 @@ import { LabelModule } from "@progress/kendo-angular-label";
 import { InputsModule } from "@progress/kendo-angular-inputs";
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ResetPasswordComponent } from './core/components/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     PreviewPageComponent,
     AddOrEditUserOfLecturerComponent,
     AddOrEditUserOfAdminComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

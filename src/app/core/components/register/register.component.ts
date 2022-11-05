@@ -1,7 +1,6 @@
 import { Component, Inject, Injector, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import * as moment from 'moment';
 import { finalize, Subject } from 'rxjs';
 import { APP_MESSAGE } from '../../constants/app-message-constant';
 import { Gender } from '../../enums/gender';
@@ -46,7 +45,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
     user.email = this.registerForm.value.email;
     user.mobile_phone = this.registerForm.value.phone;
     user.gender = this.registerForm.value.gender;
-    user.day_of_birth = this.formatDateDateOfBirth(this.registerForm.value.dob);
+    user.day_of_birth = this.formatDate(this.registerForm.value.dob);
     user.password = this.registerForm.value.passWord;
     user.password_confirmation = this.registerForm.value.confirmPassword;
 
@@ -83,14 +82,6 @@ export class RegisterComponent extends BaseComponent implements OnInit {
       }
     })
     this.dialogRef.close();
-  }
-
-  formatDateDateOfBirth(dayOfbirth?: Date) {
-    let date = '';
-    if (dayOfbirth) {
-      date = moment(new Date(dayOfbirth)).format("YYYY-MM-DD");
-    }
-    return date;
   }
 
   public getEnumGender() {

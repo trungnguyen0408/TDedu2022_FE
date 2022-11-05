@@ -39,6 +39,9 @@ import { InputsModule } from "@progress/kendo-angular-inputs";
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ResetPasswordComponent } from './core/components/reset-password/reset-password.component';
+import { ViewProfilePageComponent } from './features/view-profile-page/view-profile-page.component';
+import { EditProfileComponent } from './features/view-profile-page/edit-profile/edit-profile.component';
+import { ChangePasswordComponent } from './features/view-profile-page/change-password/change-password.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +56,9 @@ import { ResetPasswordComponent } from './core/components/reset-password/reset-p
     AddOrEditUserOfLecturerComponent,
     AddOrEditUserOfAdminComponent,
     ResetPasswordComponent,
+    ViewProfilePageComponent,
+    EditProfileComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     BrowserModule,

@@ -12,9 +12,9 @@ export class NavComponent implements OnInit {
 
   constructor(public authService: AuthService, public localStorageService: LocalStorageService, private router: Router) { }
 
-  public ngOnInit() { }
+  ngOnInit() { }
 
-  public onLogout() {
+  onLogout() {
     this.authService.logOut().subscribe(data => {
       if (data) {
         this.localStorageService.removeAll();
@@ -22,5 +22,9 @@ export class NavComponent implements OnInit {
         this.router.navigate(['']);
       }
     });
+  }
+
+  onViewProfile(){
+    this.router.navigate(['/view-profile']);
   }
 }

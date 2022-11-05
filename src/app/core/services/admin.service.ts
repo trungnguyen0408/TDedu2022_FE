@@ -21,10 +21,9 @@ export class AdminService {
   public filterUser(filter: FilterUser): Observable<any> {
     let headers = this.getHeaders();
     const params = new HttpParams().set('filters', JSON.stringify(filter));
-       console.log(params);
-    const url = `${this.REST_API_SERVER}/user?page=1&limit=50`;
+    const url = `${this.REST_API_SERVER}/user`;
     if (headers instanceof HttpHeaders)
-      return this.httpClient.get<any>(url, { headers: headers });
+      return this.httpClient.get<any>(url, { headers: headers, params: params });
     return this.httpClient.get<any>(url);
   }
 

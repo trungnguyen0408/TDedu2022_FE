@@ -164,11 +164,7 @@ export class AdminComponent extends BaseComponent implements OnInit {
 
   getUserByFilter(filter: FilterUser) {
     //call api get by filter
-    console.log(filter);
-
-    // this.showLoader();
     this.adminService.filterUser(filter).subscribe(data => {
-      console.log("data: ", data);
     });
   }
 

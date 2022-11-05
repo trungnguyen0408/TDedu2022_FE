@@ -1,4 +1,4 @@
 export class PagingBase {
-  pageSize: number = 0;
-  pageIndex: number = 0;
+  page: number = 0;
+  limit: number = 0;
 }

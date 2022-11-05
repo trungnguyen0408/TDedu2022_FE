@@ -1,9 +1,9 @@
 import { Component, Inject, Injector, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import * as moment from 'moment';
 import { BaseComponent } from 'src/app/core/components/base.component';
 import { UserGender } from 'src/app/core/constants/user-gender-constant';
+import { UserRole } from 'src/app/core/constants/user-role-constant';
 import { UserStatus } from 'src/app/core/constants/user-status-constant';
 import { ActionType } from 'src/app/core/enums/action-type';
 import { AccountUser } from 'src/app/core/models/account-user';
@@ -23,6 +23,7 @@ export class AddOrEditUserOfAdminComponent extends BaseComponent implements OnIn
     dob: ['', Validators.required],
     address: ['', Validators.required],
     gender: ['', Validators.required],
+    role: ['', Validators.required],
   });
 
   public formEditUser = this.formBuilder.group({
@@ -34,12 +35,14 @@ export class AddOrEditUserOfAdminComponent extends BaseComponent implements OnIn
     address: [''],
     gender: [''],
     status: [''],
+    role: [''],
     duration: [''],
     reasonBan: ['']
   });
 
   listGender = UserGender.Genders;
   listStatus = UserStatus.Status;
+  listRole = UserRole.Roles;
   actionType: ActionType = ActionType.none;
 
   constructor(injector: Injector, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddOrEditUserOfAdminComponent>,
@@ -50,6 +53,7 @@ export class AddOrEditUserOfAdminComponent extends BaseComponent implements OnIn
   ngOnInit(): void {
     this.actionType = this.data;
   }
+
   getPageType() {
     return ActionType;
   }
@@ -67,7 +71,7 @@ export class AddOrEditUserOfAdminComponent extends BaseComponent implements OnIn
     addUser.day_of_birth = this.formatDate(this.formCreateUser.value.dob);
     addUser.address = this.formCreateUser.value.address;
     addUser.gender = this.formCreateUser.value.gender;
-
+    addUser.role = this.formCreateUser.value.role;
     //call api
   }
 
@@ -83,15 +87,7 @@ export class AddOrEditUserOfAdminComponent extends BaseComponent implements OnIn
     editUser.status = this.formEditUser.value.status;
     editUser.duration = this.formEditUser.value.duration;
     editUser.reasonBan = this.formEditUser.value.reasonBan;
-
+    editUser.role = this.formEditUser.value.role;
     //call api
-  }
-
-  formatDate(dateFormat?: Date) {
-    let date = '';
-    if (dateFormat) {
-      date = moment(new Date(dateFormat)).format("MM/DD/YYYY");
-    }
-    return date;
   }
 }

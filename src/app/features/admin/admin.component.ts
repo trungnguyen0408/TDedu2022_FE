@@ -5,7 +5,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { PageChangeEvent } from '@progress/kendo-angular-pager';
 import { SortColumn } from 'src/app/core/enums/sort-column';
 import { SortFilter } from 'src/app/core/models/sort-filter';
-import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { PreviewPageComponent } from '../preview-page/preview-page.component';
 import { UserStatus } from 'src/app/core/constants/user-status-constant';
@@ -15,6 +14,7 @@ import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
 import { BaseComponent } from 'src/app/core/components/base.component';
 import { AddOrEditUserOfAdminComponent } from './add-or-edit-user-of-admin/add-or-edit-user-of-admin.component';
 import { ActionType } from 'src/app/core/enums/action-type';
+import { AdminService } from 'src/app/core/services/admin.service';
 
 @Component({
   selector: 'app-admin',
@@ -55,7 +55,7 @@ export class AdminComponent extends BaseComponent implements OnInit {
   { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
   { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Inactive' }];
 
-  constructor(injector: Injector, public dialog: MatDialog) {
+  constructor(injector: Injector, private dialog: MatDialog, private adminService: AdminService) {
     super(injector);
     this.form = new FormGroup({
       fullName: new FormControl(this.fullName),
@@ -70,6 +70,7 @@ export class AdminComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource.data = this.dataTest;
     this.totalData = this.dataTest.length;
+    //this.handleGetUser();
   }
 
   getSortColum() {
@@ -87,14 +88,6 @@ export class AdminComponent extends BaseComponent implements OnInit {
     } else {
       this.switchSortDirection();
     }
-  }
-
-  formatDateCreateAt(createAt?: Date) {
-    let date = '';
-    if (createAt) {
-      date = moment(new Date(createAt)).format("MM/DD/YYYY");
-    }
-    return date;
   }
 
   switchSortDirection() {
@@ -159,23 +152,20 @@ export class AdminComponent extends BaseComponent implements OnInit {
     filter.email = this.getFormValue('email');
     filter.status = this.getFormValue('status');
     filter.role = this.getFormValue('role');
-    filter.createAtFrom = this.formatDateCreateAt(this.getFormValue('createAtFrom'));
-    filter.createAtTo = this.formatDateCreateAt(this.getFormValue('createAtTo'));
-    filter.pageIndex = this.pageIndex;
-    filter.pageSize = this.pageSize;
-    filter.sortColumn = this.sortFilter.sortColumn;
-    filter.isDescendingSort = this.sortFilter.isDescendingSort;
+    filter.created_from = this.formatDate(this.getFormValue('createAtFrom'));
+    filter.created_to = this.formatDate(this.getFormValue('createAtTo'));
+    filter.limit = this.pageIndex;
+    filter.page = this.pageSize;
+    filter.sort_name = this.sortFilter.sortColumn;
+    filter.sort_by = this.sortFilter.isDescendingSort;
 
     this.getUserByFilter(filter);
   }
 
   getUserByFilter(filter: FilterUser) {
     //call api get by filter
-    this.showLoader();
-    setTimeout(() => {
-
-      this.showLoader(false);
-    }, 2000);
+    this.adminService.filterUser(filter).subscribe(data => {
+    });
   }
 
   getFormValue(name: string) {

@@ -6,11 +6,13 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { AdminComponent } from './features/admin/admin.component';
 import { HomeComponent } from './features/home/home.component';
 import { LecturerComponent } from './features/lecturer/lecturer.component';
+import { ViewProfilePageComponent } from './features/view-profile-page/view-profile-page.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'admin', component: AdminComponent, canActivate: [AuthGuard] },
+  { path: 'view-profile', component: ViewProfilePageComponent, canActivate: [AuthGuard] },
   { path: 'lecturer', component: LecturerComponent, canActivate: [AuthGuard] },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: '**', redirectTo: '' }

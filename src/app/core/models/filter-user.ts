@@ -6,8 +6,8 @@ export class FilterUser extends PagingBase {
   email: string = '';
   role: string = '';
   status: string = '';
-  createAtFrom: string = '';
-  createAtTo: string = '';
-  sortColumn: SortColumn = SortColumn.none;
-  isDescendingSort: boolean = true;
+  created_from: string = '';
+  created_to: string = '';
+  sort_name: SortColumn = SortColumn.none;
+  sort_by: boolean = true;
 }

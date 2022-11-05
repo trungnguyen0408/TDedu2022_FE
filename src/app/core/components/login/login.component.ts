@@ -54,12 +54,12 @@ export class LoginComponent extends BaseComponent implements OnInit {
     }))
       .subscribe(data => {
         if (data) {
-          this.authService.loggedIn$.next(true);
           this.localStorageService.setToken(data.access_token);
-          this.localStorageService.setItem("role", data.role[0]);
+          this.localStorageService.setItem("role", data.user.role[0]);
           this.localStorageService.setItem("user_current", data.user.username);
-          this.router.navigate(['/home']);
           this.alertMessageService.success(APP_MESSAGE.LOGIN_SUCCESSFULL);
+          this.authService.loggedIn$.next(true);
+          this.router.navigate(['/home']);
         }
       }, (err) => {
         this.loginForm.reset();

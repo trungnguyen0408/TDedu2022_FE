@@ -1,0 +1,62 @@
+<div class="profile-page">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-6 col-md-6 col-xl-6">
+        <img class="image" src="../../../assets/share/images/setting3D.webp" alt="">
+      </div>
+      <div class="col-6 col-md-6 col-xl-6 content-profile">
+        <h1>View Profile</h1>
+        <table>
+          <tr>
+            <td class="col-12 col-md-6 col-xl-6">
+              <kendo-label class="label-custom" text="Full Name"></kendo-label>
+              <input kendoTextBox readonly />
+            </td>
+            <td class="col-12 col-md-6 col-xl-6">
+              <kendo-label class="label-custom" text="User Name"></kendo-label>
+              <input kendoTextBox readonly />
+            </td>
+          </tr>
+          <tr>
+            <td class="col-12 col-md-6 col-xl-6">
+              <kendo-label class="label-custom" text="Email"></kendo-label>
+              <input kendoTextBox readonly />
+            </td>
+            <td class="col-12 col-md-6 col-xl-6">
+              <kendo-label class="label-custom" text="Address"></kendo-label>
+              <input kendoTextBox readonly />
+            </td>
+          </tr>
+          <tr>
+            <td class="col-12 col-md-6 col-xl-6">
+              <kendo-label class="label-custom" text="Number Phone"></kendo-label>
+              <input kendoTextBox readonly />
+            </td>
+            <td class="col-12 col-md-6 col-xl-6">
+              <kendo-label class="label-custom" text="Date of Birth"></kendo-label>
+              <input kendoTextBox readonly />
+            </td>
+          </tr>
+          <tr>
+            <td class="col-12 col-md-6 col-xl-6">
+              <kendo-label class="label-custom" text="Gender"></kendo-label>
+              <input kendoTextBox readonly />
+            </td>
+            <td class="col-12 col-md-6 col-xl-6">
+              <kendo-label class="label-custom" text="Status"></kendo-label>
+              <input kendoTextBox readonly />
+            </td>
+          </tr>
+        </table>
+        <div class="action-btn d-flex justify-content-end pt-3">
+          <div class="search pr-3">
+            <button class="btn btn-primary" (click)="onUpdate()">Update</button>
+          </div>
+          <div class="create-user">
+            <button class="btn btn-success" (click)="onChange()">Change password</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -60,13 +60,12 @@
                 <button class="btn btn-primary" (click)="onSearch()">Search</button>
               </div>
               <div class="create-user">
-                <button class="btn btn-success">New user</button>
+                <button class="btn btn-success" (click)="onCreate()">New user</button>
               </div>
             </div>
           </div>
         </div>
       </div>
-
     </form>
   </div>
   <div class="table-user">
@@ -138,14 +137,14 @@
       <ng-container matColumnDef="preview">
         <th mat-header-cell *matHeaderCellDef> Preview </th>
         <td mat-cell *matCellDef="let element">
-          <kendo-icon name="preview" size="medium"></kendo-icon>
+          <kendo-icon name="preview" size="medium" (click)="onPreview()"></kendo-icon>
         </td>
       </ng-container>
 
       <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef> Edit </th>
         <td mat-cell *matCellDef="let element">
-          <kendo-icon name="edit" size="medium"></kendo-icon>
+          <kendo-icon name="edit" size="medium" (click)="onEdit()"></kendo-icon>
         </td>
       </ng-container>
 

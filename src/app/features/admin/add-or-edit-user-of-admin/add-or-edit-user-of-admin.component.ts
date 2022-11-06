@@ -70,7 +70,7 @@ export class AddOrEditUserOfAdminComponent extends BaseComponent implements OnIn
     addUser.mobile_phone = this.formCreateUser.value.phone;
     addUser.day_of_birth = this.formatDate(this.formCreateUser.value.dob);
     addUser.address = this.formCreateUser.value.address;
-    addUser.gender = this.formCreateUser.value.gender;
+    addUser.gender = this.convertValueToCharOfGender(this.formCreateUser.value.gender);
     addUser.role = this.formCreateUser.value.role;
     //call api
   }

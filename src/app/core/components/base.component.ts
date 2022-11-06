@@ -22,11 +22,43 @@ export abstract class BaseComponent {
     }
   }
 
-  formatDate(dayOfbirth?: Date) {
+  formatDate(dayOfbirth?: Date, type: string = "YYYY-MM-DD") {
     let date = '';
     if (dayOfbirth) {
-      date = moment(new Date(dayOfbirth)).format("YYYY-MM-DD");
+      date = moment(new Date(dayOfbirth)).format(type);
     }
     return date;
+  }
+
+  convertChartoValueOfGender(char: string) {
+    let result: string = '';
+    switch (char) {
+      case 'F':
+        result = 'Female'
+        break;
+      case 'M':
+        result = 'Male'
+        break;
+      case 'U':
+        result = 'Unknow'
+        break;
+    }
+    return result;
+  }
+
+  convertValueToCharOfGender(value: string) {
+    let result: string = '';
+    switch (value) {
+      case 'Female':
+        result = 'F'
+        break;
+      case 'Male':
+        result = 'M'
+        break;
+      case 'Unknow':
+        result = 'U'
+        break;
+    }
+    return result;
   }
 }

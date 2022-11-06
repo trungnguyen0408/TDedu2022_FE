@@ -20,11 +20,14 @@ export class AdminService {
 
   public filterUser(filter: FilterUser): Observable<any> {
     let headers = this.getHeaders();
-    const params = new HttpParams().set('filters', JSON.stringify(filter));
+    const params = new HttpParams().set('page', filter.page)
+      .set('limit', filter.limit).set('role', filter.role)
+      .set('created_from', filter.created_from)
+      .set('created_to', filter.created_to)
+      .set('status', filter.status);
     const url = `${this.REST_API_SERVER}/user`;
     if (headers instanceof HttpHeaders)
       return this.httpClient.get<any>(url, { headers: headers, params: params });
     return this.httpClient.get<any>(url);
   }
-
 }

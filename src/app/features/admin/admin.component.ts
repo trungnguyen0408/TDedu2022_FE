@@ -70,7 +70,7 @@ export class AdminComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource.data = this.dataTest;
     this.totalData = this.dataTest.length;
-    //this.handleGetUser();
+   //this.handleGetUser();
   }
 
   getSortColum() {

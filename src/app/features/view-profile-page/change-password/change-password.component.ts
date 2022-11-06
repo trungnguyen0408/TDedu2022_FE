@@ -10,9 +10,9 @@ import { BaseComponent } from 'src/app/core/components/base.component';
 })
 export class ChangePasswordComponent extends BaseComponent implements OnInit {
   public changePassForm = this.formBuilder.group({
-    passWordOld: [''],
-    passWordNew: [''],
-    confirmPassword: ['']
+    old_password: [''],
+    new_password: [''],
+    new_password_confirmation: ['']
   });
 
   constructor(injector: Injector, public dialogRef: MatDialogRef<ChangePasswordComponent>,
@@ -21,9 +21,5 @@ export class ChangePasswordComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  }
-
-  onChange() {
-    this.dialogRef.close();
   }
 }

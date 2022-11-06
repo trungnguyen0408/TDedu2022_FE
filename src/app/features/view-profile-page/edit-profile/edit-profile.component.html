@@ -1,21 +1,21 @@
 <h1 mat-dialog-title>Edit profile</h1>
 <mat-dialog-content class="register-content">
-  <form class="register-form" [formGroup]="editProFileForm" (ngSubmit)="onSave()">
+  <form class="register-form" [formGroup]="editProFileForm">
     <mat-form-field class="input-field" appearance="fill">
-      <mat-label>Full Name</mat-label>
-      <input formControlName="fullName" matInput placeholder="full name" value="">
+      <mat-label>Full Name </mat-label>
+      <input formControlName="full_name" matInput>
     </mat-form-field>
     <mat-form-field class="input-field" appearance="fill">
       <mat-label>User Name</mat-label>
-      <input formControlName="userName" matInput placeholder="username" value="">
+      <input formControlName="username" matInput placeholder="username">
     </mat-form-field>
     <mat-form-field class="input-field" appearance="fill">
       <mat-label>Phone</mat-label>
-      <input formControlName="phone" matInput placeholder="phone" value="">
+      <input formControlName="mobile_phone" matInput placeholder="phone">
     </mat-form-field>
     <mat-form-field appearance="fill" class="input-field pt-2">
       <mat-label>Day Of Birth</mat-label>
-      <input matInput formControlName="dob" [matDatepicker]="dp3" readonly>
+      <input matInput formControlName="date_of_birth" [matDatepicker]="dp3" readonly>
       <mat-hint>MM/DD/YYYY</mat-hint>
       <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
       <mat-datepicker #dp3 disabled="false"></mat-datepicker>
@@ -23,17 +23,11 @@
     <mat-form-field appearance="fill" class="pt-2 input-field">
       <mat-label>Gender</mat-label>
       <mat-select formControlName="gender">
-        <mat-option [value]="getEnumGender().male">
-          Male
-        </mat-option>
-        <mat-option [value]="getEnumGender().female">
-          Female
-        </mat-option>
-        <mat-option [value]="getEnumGender().unknow">
-          Unknow
+        <mat-option *ngFor="let gender of listGender" [value]="gender.value">
+          {{gender.text}}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button class="edit-profile-button mt-4" cdkFocusInitial type="submit">Save</button>
+    <button class="edit-profile-button mt-4"  [mat-dialog-close]="editProFileForm.value" cdkFocusInitial type="submit">Save</button>
   </form>
 </mat-dialog-content>

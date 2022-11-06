@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Account } from '../models/account';
 import { RegisterUser } from '../models/register-user';
 import { LocalStorageService } from './localStorage.service';
 
@@ -14,7 +14,7 @@ export class AuthService {
   public isLoggedIn$ = this.loggedIn$.asObservable();
   private REST_API_SERVER = environment.api;
 
-  constructor(private httpClient: HttpClient, private router: Router, private localStorageService: LocalStorageService) {
+  constructor(private httpClient: HttpClient, private localStorageService: LocalStorageService) {
     const token = this.localStorageService.getToken();
     this.loggedIn$.next(!!token);
   }
@@ -24,12 +24,41 @@ export class AuthService {
     return token ? new HttpHeaders().set('Authorization', 'Bearer ' + token) : null;
   }
 
-  public getProfile(): Observable<any> {
+  public getProfile(): Observable<Account> {
     let headers = this.getHeaders();
     const url = `${this.REST_API_SERVER}/auth/user-profile`;
     if (headers instanceof HttpHeaders)
-      return this.httpClient.get<any>(url, { headers: headers });
-    return this.httpClient.get<any>(url);
+      return this.httpClient.get<Account>(url, { headers: headers });
+    return this.httpClient.get<Account>(url);
+  }
+
+  public updateProfile(account: any): Observable<any> {
+    const data = {
+      username: account.username,
+      full_name: account.full_name,
+      mobile_phone: account.mobile_phone,
+      date_of_birth: account.date_of_birth,
+      gender: account.gender,
+      address: account.address
+    }
+    const headers = this.getHeaders();
+    const url = `${this.REST_API_SERVER}/auth/update-profile`;
+    if (headers instanceof HttpHeaders)
+      return this.httpClient.put<any>(url, data, { headers: headers });
+    return this.httpClient.put<any>(url, data);
+  }
+
+  public changePassword(old_password: string, new_password: string, new_password_confirmation: string): Observable<any> {
+    const headers = this.getHeaders();
+    const data = {
+      old_password: old_password,
+      new_password: new_password,
+      new_password_confirmation: new_password_confirmation,
+    };
+    const url = `${this.REST_API_SERVER}/auth/change-pass`;
+    if (headers instanceof HttpHeaders)
+      return this.httpClient.post<any>(url, data, { headers: headers });
+    return this.httpClient.post<any>(url, data);
   }
 
   public logIn(userName: string, passWord: string): Observable<any> {
@@ -39,7 +68,7 @@ export class AuthService {
   }
 
   public logOut(): Observable<any> {
-    let headers = this.getHeaders();
+    const headers = this.getHeaders();
     const url = `${this.REST_API_SERVER}/auth/logout`;
     if (headers instanceof HttpHeaders)
       return this.httpClient.post<any>(url, null, { headers: headers });
@@ -47,7 +76,7 @@ export class AuthService {
   }
 
   public forgotPassword(inputValue: string): Observable<any> {
-    let data = {
+    const data = {
       username: inputValue
     }
     const url = `${this.REST_API_SERVER}/auth/send-reset-password`;
@@ -55,7 +84,7 @@ export class AuthService {
   }
 
   public resetPassword(tokenTemp: string, newPassword: string, confirmPassWord: string): Observable<any> {
-    let data = {
+    const data = {
       token: tokenTemp,
       password: newPassword,
       password_confirmation: confirmPassWord,

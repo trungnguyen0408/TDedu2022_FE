@@ -5,4 +5,5 @@ export const APP_MESSAGE = {
   REGISTER_SUCCESSFULL: 'register successful.',
   SAVE_SUCCESSFULL: 'save successful.',
   CHANGE_PASS_SUCCESSFUL: 'Password changed successfully.',
+  CREATE_USER_SUCCESSFULL: 'Create successful.',
 }

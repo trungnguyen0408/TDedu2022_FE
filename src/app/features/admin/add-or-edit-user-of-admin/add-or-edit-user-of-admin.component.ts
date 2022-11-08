@@ -7,7 +7,9 @@ import { UserRole } from 'src/app/core/constants/user-role-constant';
 import { UserStatus } from 'src/app/core/constants/user-status-constant';
 import { ActionType } from 'src/app/core/enums/action-type';
 import { AccountUser } from 'src/app/core/models/account-user';
-
+import { AdminService } from '../../../core/services/admin.service';
+import { APP_MESSAGE } from '../../../core/constants/app-message-constant';
+import { finalize, Subject } from 'rxjs';
 @Component({
   selector: 'app-add-or-edit-user-of-admin',
   templateUrl: './add-or-edit-user-of-admin.component.html',
@@ -45,7 +47,7 @@ export class AddOrEditUserOfAdminComponent extends BaseComponent implements OnIn
   listRole = UserRole.Roles;
   actionType: ActionType = ActionType.none;
 
-  constructor(injector: Injector, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddOrEditUserOfAdminComponent>,
+  constructor(injector: Injector, private adminService: AdminService,private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddOrEditUserOfAdminComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ActionType) {
     super(injector);
   }
@@ -71,8 +73,28 @@ export class AddOrEditUserOfAdminComponent extends BaseComponent implements OnIn
     addUser.day_of_birth = this.formatDate(this.formCreateUser.value.dob);
     addUser.address = this.formCreateUser.value.address;
     addUser.gender = this.convertValueToCharOfGender(this.formCreateUser.value.gender);
-    addUser.role = this.formCreateUser.value.role;
-    //call api
+    addUser.role = this.formCreateUser.value.role; 
+    this.showLoader();
+    this.adminService.createUser(addUser).pipe(finalize(() => {
+      this.showLoader(false);
+    })).subscribe(() => {
+      this.alertMessageService.success(APP_MESSAGE.CREATE_USER_SUCCESSFULL);
+      this.dialogRef.close();
+    }, (err) => {
+      if (err.error.username && err.error.email && err.error.mobile_phone) {
+        this.alertMessageService.error(`${err.error.username} / ${err.error.email} / ${err.error.mobile_phone}`);
+        return
+      }
+      if (err.error.username) {
+        this.alertMessageService.error(err.error.username);
+      } else  if (err.error.email) {
+        this.alertMessageService.error(err.error.email);
+      } else {
+        this.alertMessageService.error(err.error.mobile_phone);
+      }
+    })
+    this.dialogRef.close();
+     
   }
 
   onEdit() {
@@ -89,5 +111,5 @@ export class AddOrEditUserOfAdminComponent extends BaseComponent implements OnIn
     editUser.reasonBan = this.formEditUser.value.reasonBan;
     editUser.role = this.formEditUser.value.role;
     //call api
-  }
+  } 
 }

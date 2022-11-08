@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { FilterUser } from '../models/filter-user';
+import { AccountUser } from '../models/account-user';
 import { LocalStorageService } from './localStorage.service';
 
 @Injectable({
@@ -30,4 +31,21 @@ export class AdminService {
       return this.httpClient.get<any>(url, { headers: headers, params: params });
     return this.httpClient.get<any>(url);
   }
+  public createUser(createuser: AccountUser): Observable<any> {  
+    const data = {
+      email: createuser.email,
+      username: createuser.userName,     
+      role: createuser.role,    
+      full_name: createuser.full_name,
+      mobile_phone: createuser.mobile_phone,     
+      gender: createuser.gender,
+      date_of_birth: createuser.day_of_birth        
+    }
+    const headers = this.getHeaders();
+    const url = `${this.REST_API_SERVER}/user`;
+    if (headers instanceof HttpHeaders)
+      return this.httpClient.post<any>(url, data, { headers: headers });
+    return this.httpClient.post<any>(url, data);
+    
+  }  
 }

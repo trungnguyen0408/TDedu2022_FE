@@ -13,13 +13,12 @@
       width: 100%;
 
       th.mat-header-cell {
-        cursor: pointer;
         font-size: 18px;
         font-weight: bold;
         color: #0489df;
       }
 
-      .mat-column-fullname,
+      .mat-column-full_name,
       .mat-column-email {
         width: 25%;
       }
@@ -36,7 +35,7 @@
       }
 
       .mat-column-role,
-      .mat-column-createAt {
+      .mat-column-created_at {
         width: 10%;
       }
 

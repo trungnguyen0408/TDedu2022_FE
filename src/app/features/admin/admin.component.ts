@@ -3,7 +3,6 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageChangeEvent } from '@progress/kendo-angular-pager';
-import { SortColumn } from 'src/app/core/enums/sort-column';
 import { SortFilter } from 'src/app/core/models/sort-filter';
 import { MatDialog } from '@angular/material/dialog';
 import { PreviewPageComponent } from '../preview-page/preview-page.component';
@@ -14,7 +13,11 @@ import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
 import { BaseComponent } from 'src/app/core/components/base.component';
 import { AddOrEditUserOfAdminComponent } from './add-or-edit-user-of-admin/add-or-edit-user-of-admin.component';
 import { ActionType } from 'src/app/core/enums/action-type';
-import { AdminService } from 'src/app/core/services/admin.service';
+import { UserService } from 'src/app/core/services/user.service';
+import { Sort } from '@angular/material/sort';
+import { finalize } from 'rxjs';
+import { AccountUser } from 'src/app/core/models/account-user';
+import { DialogConfirmComponent } from 'src/app/core/components/dialog-confirm/dialog-confirm.component';
 
 @Component({
   selector: 'app-admin',
@@ -22,7 +25,7 @@ import { AdminService } from 'src/app/core/services/admin.service';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent extends BaseComponent implements OnInit {
-  displayedColumns: string[] = ['select', 'fullName', 'email', 'role', 'createAt', 'status', 'preview', 'edit', 'del'];
+  displayedColumns: string[] = ['select', 'full_name', 'email', 'role', 'created_at', 'status', 'preview', 'edit', 'del'];
   dataSource = new MatTableDataSource<any>();
   form: FormGroup;
   fullName: string = '';
@@ -36,26 +39,15 @@ export class AdminComponent extends BaseComponent implements OnInit {
   pageIndex: number = 1;
   totalData: number = 0;
   sortFilter: SortFilter = {
-    sortColumn: SortColumn.none,
-    isDescendingSort: true,
+    sort_name: '',
+    sort_type: ''
   };
   selectionUser = new SelectionModel<any>(true, []);
   listStatus = UserStatus.Status;
   defaultItem: { text: string, value: string } = { text: 'All', value: '' };
   listRole = UserRole.Roles;
 
-  dataTest: any[] = [{ fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Active' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Banned' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Inactive' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Banned' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Active' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Inactive' }];
-
-  constructor(injector: Injector, private dialog: MatDialog, private adminService: AdminService) {
+  constructor(injector: Injector, private dialog: MatDialog, private userService: UserService) {
     super(injector);
     this.form = new FormGroup({
       fullName: new FormControl(this.fullName),
@@ -68,33 +60,43 @@ export class AdminComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSource.data = this.dataTest;
-    this.totalData = this.dataTest.length;
-   //this.handleGetUser();
-  }
-
-  getSortColum() {
-    return SortColumn;
+    this.handleGetUser();
   }
 
   onSearch() {
     this.handleGetUser();
   }
 
-  onSortColumn(sortField: SortColumn) {
-    if (this.sortFilter.sortColumn != sortField) {
-      this.sortFilter.sortColumn = sortField;
-      this.sortFilter.isDescendingSort = false;
-    } else {
-      this.switchSortDirection();
-    }
-  }
-
-  switchSortDirection() {
-    this.sortFilter.isDescendingSort = this.sortFilter.isDescendingSort ? false : true;
-  }
-
   onBulkDelete() {
+    if (this.selectionUser.selected.length === 0) {
+      this.alertMessageService.error(APP_MESSAGE.BULK_DELETE_BLANK);
+      return;
+    }
+
+    let msg = this.selectionUser.selected.length === 1 ? `Do you want to remove "${this.selectionUser.selected[0].full_name}" ?` : APP_MESSAGE.BULK_DELETE;
+    let ids = this.getIdsFromUsers(this.selectionUser.selected);
+
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      minWidth: '400px',
+      data: { confirmDialog: true, message: msg }
+    });
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        this.userService.bulkDelete(ids).subscribe(response => {
+          if (response) {
+            this.alertMessageService.success(APP_MESSAGE.DELETE_SUCCESSFULL);
+            this.selectionUser.clear();
+            this.handleGetUser();
+          }
+        })
+      }
+    });
+  }
+
+  getIdsFromUsers(users: AccountUser[]): string[] {
+    let ids: string[] = [];
+    users.forEach(user => ids.push(user.id));
+    return ids;
   }
 
   isAllSelected() {
@@ -112,25 +114,55 @@ export class AdminComponent extends BaseComponent implements OnInit {
   onPageChange(e: PageChangeEvent) {
     this.skip = e.skip;
     this.pageSize = e.take;
-    this.pageIndex = this.skip / this.pageSize;
+    this.pageIndex = Math.ceil((e.skip + 1) / e.take);
+    this.handleGetUser();
   }
 
-  onPreview() {
+  onPreview(item: any) {
     this.dialog.open(PreviewPageComponent, {
-      data: '123'
+      data: item
     })
   }
 
-  onEdit() {
-    this.dialog.open(AddOrEditUserOfAdminComponent, {
-      data: ActionType.edit
+  onEdit(item: any) {
+    const dialogRef = this.dialog.open(AddOrEditUserOfAdminComponent, {
+      data: { type: ActionType.edit, user: item ?? '' },
     })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.handleGetUser();
+      }
+    });
   }
 
   onCreate() {
-    this.dialog.open(AddOrEditUserOfAdminComponent, {
-      data: ActionType.add
+    const dialogRef = this.dialog.open(AddOrEditUserOfAdminComponent, {
+      data: { type: ActionType.add, user: {} },
     })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.handleGetUser();
+      }
+    });
+  }
+
+  onDelete(item: any) {
+    const dialogRef = this.dialog.open(DialogConfirmComponent, {
+      minWidth: '400px',
+      data: { confirmDialog: true, message: `Do you want to remove "${item.full_name}" ?` }
+    });
+    dialogRef.afterClosed().subscribe(async (result) => {
+      if (result) {
+        this.userService.delete(item.id).subscribe(response => {
+          if (response) {
+            this.alertMessageService.success(APP_MESSAGE.DELETE_SUCCESSFULL);
+            this.handleGetUser();
+          }
+        })
+      }
+    });
   }
 
   handleGetUser() {
@@ -147,24 +179,29 @@ export class AdminComponent extends BaseComponent implements OnInit {
     }
 
     const filter = new FilterUser();
-
     filter.fullName = this.getFormValue('fullName');
     filter.email = this.getFormValue('email');
     filter.status = this.getFormValue('status');
     filter.role = this.getFormValue('role');
     filter.created_from = this.formatDate(this.getFormValue('createAtFrom'));
     filter.created_to = this.formatDate(this.getFormValue('createAtTo'));
-    filter.limit = this.pageIndex;
-    filter.page = this.pageSize;
-    filter.sort_name = this.sortFilter.sortColumn;
-    filter.sort_by = this.sortFilter.isDescendingSort;
+    filter.page = this.pageIndex;
+    filter.limit = this.pageSize;
+    filter.sort_name = this.sortFilter.sort_name;
+    filter.sort_type = this.sortFilter.sort_type;
 
     this.getUserByFilter(filter);
   }
 
   getUserByFilter(filter: FilterUser) {
-    //call api get by filter
-    this.adminService.filterUser(filter).subscribe(data => {
+    this.showLoader();
+    this.userService.filter(filter).pipe(finalize(() => {
+      this.showLoader(false);
+    })).subscribe(reponse => {
+      if (reponse) {
+        this.dataSource.data = reponse.data;
+        this.totalData = reponse.total;
+      }
     });
   }
 
@@ -174,5 +211,11 @@ export class AdminComponent extends BaseComponent implements OnInit {
 
   isUserInputCreateAt(): boolean {
     return this.createAtFrom != null || this.createAtTo != null ? true : false;
+  }
+
+  sortData(sortState: Sort) {
+    this.sortFilter.sort_name = sortState.active;
+    this.sortFilter.sort_type = sortState.direction;
+    this.handleGetUser();
   }
 }

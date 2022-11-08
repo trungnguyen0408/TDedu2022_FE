@@ -45,20 +45,4 @@ export abstract class BaseComponent {
     }
     return result;
   }
-
-  convertValueToCharOfGender(value: string) {
-    let result: string = '';
-    switch (value) {
-      case 'Female':
-        result = 'F'
-        break;
-      case 'Male':
-        result = 'M'
-        break;
-      case 'Unknow':
-        result = 'U'
-        break;
-    }
-    return result;
-  }
 }

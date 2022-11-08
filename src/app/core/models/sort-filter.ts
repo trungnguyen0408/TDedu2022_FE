@@ -1,6 +1,4 @@
-import { SortColumn } from "../enums/sort-column";
-
 export interface SortFilter {
-  sortColumn: SortColumn,
-  isDescendingSort: boolean,
+  sort_name: string,
+  sort_type: string,
 }

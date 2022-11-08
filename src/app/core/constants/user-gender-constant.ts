@@ -6,8 +6,8 @@ export const UserGenderConstants = {
 
 export class UserGender {
   static Genders: Array<{ text: string; value: string }> = [
-    { text: UserGenderConstants.MALE, value: UserGenderConstants.MALE },
-    { text: UserGenderConstants.FEMALE, value: UserGenderConstants.FEMALE },
-    { text: UserGenderConstants.UNKNOW, value: UserGenderConstants.UNKNOW },
+    { text: UserGenderConstants.MALE, value: 'M' },
+    { text: UserGenderConstants.FEMALE, value: 'F' },
+    { text: UserGenderConstants.UNKNOW, value: 'U' },
   ];
 }

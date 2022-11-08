@@ -2,13 +2,13 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageChangeEvent } from '@progress/kendo-angular-pager';
 import { BaseComponent } from 'src/app/core/components/base.component';
 import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
 import { UserStatus } from 'src/app/core/constants/user-status-constant';
 import { ActionType } from 'src/app/core/enums/action-type';
-import { SortColumn } from 'src/app/core/enums/sort-column';
 import { FilterUser } from 'src/app/core/models/filter-user';
 import { SortFilter } from 'src/app/core/models/sort-filter';
 import { PreviewPageComponent } from '../preview-page/preview-page.component';
@@ -21,7 +21,7 @@ import { AddOrEditUserOfLecturerComponent } from './add-or-edit-user-of-lecturer
 })
 export class LecturerComponent extends BaseComponent implements OnInit {
 
-  displayedColumns: string[] = ['fullName', 'email', 'role', 'createAt', 'status', 'preview', 'edit'];
+  displayedColumns: string[] = ['full_name', 'email', 'role', 'created_at', 'status', 'preview', 'edit'];
   dataSource = new MatTableDataSource<any>();
   form: FormGroup;
   fullName: string = '';
@@ -35,8 +35,8 @@ export class LecturerComponent extends BaseComponent implements OnInit {
   totalData: number = 0;
   selectionUser = new SelectionModel<any>(true, []);
   sortFilter: SortFilter = {
-    sortColumn: SortColumn.none,
-    isDescendingSort: true
+    sort_name: '',
+    sort_type: ''
   };
   listStatus = UserStatus.Status;
   defaultItem: { text: string, value: string } = { text: 'All', value: '' };
@@ -68,9 +68,6 @@ export class LecturerComponent extends BaseComponent implements OnInit {
     this.totalData = this.dataTest.length;
   }
 
-  getSortColum() {
-    return SortColumn;
-  }
 
   onSearch() {
     this.handleGetUser();
@@ -97,8 +94,8 @@ export class LecturerComponent extends BaseComponent implements OnInit {
     filter.created_to = this.formatDate(this.getFormValue('createAtTo'));
     filter.limit = this.pageIndex;
     filter.page = this.pageSize;
-    filter.sort_name = this.sortFilter.sortColumn;
-    filter.sort_by = this.sortFilter.isDescendingSort;
+    filter.sort_name = this.sortFilter.sort_name;
+    filter.sort_type = this.sortFilter.sort_type;
 
     this.getUserByFilter(filter);
   }
@@ -116,27 +113,22 @@ export class LecturerComponent extends BaseComponent implements OnInit {
     }, 2000);
   }
 
-  onSortColumn(sortField: SortColumn) {
-    if (this.sortFilter.sortColumn != sortField) {
-      this.sortFilter.sortColumn = sortField;
-      this.sortFilter.isDescendingSort = false;
-    } else {
-      this.switchSortDirection();
-    }
-  }
 
   isUserInputSubmittedDate(): boolean {
     return this.createAtFrom != null || this.createAtTo != null ? true : false;
   }
 
-  switchSortDirection() {
-    this.sortFilter.isDescendingSort = this.sortFilter.isDescendingSort ? false : true;
-  }
-
   onPageChange(e: PageChangeEvent) {
     this.skip = e.skip;
     this.pageSize = e.take;
-    this.pageIndex = this.skip / this.pageSize;
+    this.pageIndex = Math.ceil((e.skip + 1) / e.take);
+    this.handleGetUser();
+  }
+
+  sortData(sortState: Sort) {
+    this.sortFilter.sort_name = sortState.active;
+    this.sortFilter.sort_type = sortState.direction;
+    this.handleGetUser();
   }
 
   onPreview() {

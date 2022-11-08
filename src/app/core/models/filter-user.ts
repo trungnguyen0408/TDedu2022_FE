@@ -1,4 +1,3 @@
-import { SortColumn } from "../enums/sort-column";
 import { PagingBase } from "./paging-base";
 
 export class FilterUser extends PagingBase {
@@ -8,6 +7,6 @@ export class FilterUser extends PagingBase {
   status: string = '';
   created_from: string = '';
   created_to: string = '';
-  sort_name: SortColumn = SortColumn.none;
-  sort_by: boolean = true;
+  sort_name: string = '';
+  sort_type: string = '';
 }

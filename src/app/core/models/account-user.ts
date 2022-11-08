@@ -1,10 +1,11 @@
 export class AccountUser {
+  id: string = '';
   full_name: string = '';
-  userName: string = '';
+  username: string = '';
   email: string = '';
   role: string = '';
   mobile_phone: string = '';
-  day_of_birth: string = '';
+  date_of_birth: string = '';
   gender: string = '';
   status: string = '';
   address: string = '';

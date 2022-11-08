@@ -26,7 +26,6 @@ export class ViewProfilePageComponent extends BaseComponent implements OnInit {
     })).subscribe(data => {
       this.account = data;
       this.account.date_of_birth = this.formatDate(new Date(data.date_of_birth), "MM-DD-YYYY");
-      this.account.gender = this.convertChartoValueOfGender(data.gender);
     })
   }
 
@@ -38,7 +37,6 @@ export class ViewProfilePageComponent extends BaseComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        result.gender = this.convertValueToCharOfGender(result.gender);
         result.date_of_birth = this.formatDate(result.date_of_birth);
         this.showLoader();
         this.authService.updateProfile(result).pipe(finalize(() => {
@@ -46,7 +44,6 @@ export class ViewProfilePageComponent extends BaseComponent implements OnInit {
         })).subscribe(data => {
           this.account = data;
           this.account.date_of_birth = this.formatDate(new Date(data.date_of_birth), "MM-DD-YYYY");
-          this.account.gender = this.convertChartoValueOfGender(data.gender);
           this.alertMessageService.success(APP_MESSAGE.SAVE_SUCCESSFULL);
         }, (err) => {
           this.alertMessageService.error(`${err.error.username ?? ''}
@@ -54,7 +51,6 @@ export class ViewProfilePageComponent extends BaseComponent implements OnInit {
           ${err.error.mobile_phone ?? ''}`);
         })
       }
-
     });
   }
 

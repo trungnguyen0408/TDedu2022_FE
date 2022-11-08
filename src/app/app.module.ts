@@ -42,6 +42,8 @@ import { ResetPasswordComponent } from './core/components/reset-password/reset-p
 import { ViewProfilePageComponent } from './features/view-profile-page/view-profile-page.component';
 import { EditProfileComponent } from './features/view-profile-page/edit-profile/edit-profile.component';
 import { ChangePasswordComponent } from './features/view-profile-page/change-password/change-password.component';
+import { MatSortModule } from '@angular/material/sort';
+import { DialogConfirmComponent } from './core/components/dialog-confirm/dialog-confirm.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,7 @@ import { ChangePasswordComponent } from './features/view-profile-page/change-pas
     ViewProfilePageComponent,
     EditProfileComponent,
     ChangePasswordComponent,
+    DialogConfirmComponent,
   ],
   imports: [
     BrowserModule,
@@ -87,7 +90,8 @@ import { ChangePasswordComponent } from './features/view-profile-page/change-pas
     InputsModule,
     LabelModule,
     ScrollingModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]

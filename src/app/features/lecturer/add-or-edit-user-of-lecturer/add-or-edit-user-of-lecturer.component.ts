@@ -59,10 +59,10 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
   onCreate() {
     const addUser = new AccountUser();
     addUser.full_name = this.formCreateUser.value.fullName;
-    addUser.userName = this.formCreateUser.value.userName;
+    addUser.username = this.formCreateUser.value.userName;
     addUser.email = this.formCreateUser.value.email;
     addUser.mobile_phone = this.formCreateUser.value.phone;
-    addUser.day_of_birth = this.formatDate(this.formCreateUser.value.dob);
+    addUser.date_of_birth = this.formatDate(this.formCreateUser.value.dob);
     addUser.address = this.formCreateUser.value.address;
     addUser.gender = this.formCreateUser.value.gender;
     addUser.role = 'Student';
@@ -72,10 +72,10 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
   onEdit() {
     const editUser = new AccountUser();
     editUser.full_name = this.formEditUser.value.fullName;
-    editUser.userName = this.formEditUser.value.userName;
+    editUser.username = this.formEditUser.value.userName;
     editUser.email = this.formEditUser.value.email;
     editUser.mobile_phone = this.formEditUser.value.phone;
-    editUser.day_of_birth = this.formatDate(this.formEditUser.value.dob);
+    editUser.date_of_birth = this.formatDate(this.formEditUser.value.dob);
     editUser.address = this.formEditUser.value.address;
     editUser.gender = this.formEditUser.value.gender;
     editUser.status = this.formEditUser.value.status;

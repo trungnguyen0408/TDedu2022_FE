@@ -20,31 +20,31 @@
           <tr>
             <td class="col-12 col-md-6 col-xl-6">
               <kendo-label class="label-custom" text="Email"></kendo-label>
-              <input kendoTextBox readonly value="{{account.email}}"/>
+              <input kendoTextBox readonly value="{{account.email}}" />
             </td>
             <td class="col-12 col-md-6 col-xl-6">
               <kendo-label class="label-custom" text="Address"></kendo-label>
-              <input kendoTextBox readonly value="{{account.address}}"/>
+              <input kendoTextBox readonly value="{{account.address}}" />
             </td>
           </tr>
           <tr>
             <td class="col-12 col-md-6 col-xl-6">
               <kendo-label class="label-custom" text="Number Phone"></kendo-label>
-              <input kendoTextBox readonly value="{{account.mobile_phone}}"/>
+              <input kendoTextBox readonly value="{{account.mobile_phone}}" />
             </td>
             <td class="col-12 col-md-6 col-xl-6">
               <kendo-label class="label-custom" text="Date of Birth"></kendo-label>
-              <input kendoTextBox readonly value="{{account.date_of_birth }}"/>
+              <input kendoTextBox readonly value="{{account.date_of_birth }}" />
             </td>
           </tr>
           <tr>
             <td class="col-12 col-md-6 col-xl-6">
               <kendo-label class="label-custom" text="Gender"></kendo-label>
-              <input kendoTextBox readonly value="{{account.gender}}"/>
+              <input kendoTextBox readonly value="{{convertChartoValueOfGender(account.gender)}}" />
             </td>
             <td class="col-12 col-md-6 col-xl-6">
               <kendo-label class="label-custom" text="Status"></kendo-label>
-              <input kendoTextBox readonly value="{{account.status}}"/>
+              <input kendoTextBox readonly value="{{account.status}}" />
             </td>
           </tr>
         </table>

@@ -75,7 +75,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           Full name
         </th>
-        <td mat-cell *matCellDef="let element"> {{element.fullName}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.full_name}} </td>
       </ng-container>
 
       <ng-container matColumnDef="email">
@@ -96,7 +96,7 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
           Create at
         </th>
-        <td mat-cell *matCellDef="let element"> {{element.createAt}} </td>
+        <td mat-cell *matCellDef="let element"> {{element.created_at | date}} </td>
       </ng-container>
 
       <ng-container matColumnDef="status">
@@ -113,7 +113,7 @@
       <ng-container matColumnDef="preview">
         <th mat-header-cell *matHeaderCellDef> Preview </th>
         <td mat-cell *matCellDef="let element">
-          <kendo-icon name="preview" size="medium" (click)="onPreview()"></kendo-icon>
+          <kendo-icon name="preview" size="medium" (click)="onPreview(element)"></kendo-icon>
         </td>
       </ng-container>
 

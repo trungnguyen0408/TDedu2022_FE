@@ -1,0 +1,388 @@
+* {
+  font-family: sans-serif;
+}
+
+#carouselExampleIndicators img {
+  width: 100%;
+  height: 500px;
+}
+
+.banner .card-img-overlay {
+  border: 1px solid gray;
+  border-radius: 10px;
+  background-color: black;
+  opacity: 0.7;
+  top: 300px;
+  left: 80px;
+  right: 80px;
+  bottom: 10px;
+}
+
+.banner .card-img-overlay h2 {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.banner .card-img-overlay p {
+  font-size: 18px;
+  padding-bottom: 20px;
+}
+
+.banner .card-img-overlay a {
+  text-decoration: none;
+  padding: 14px;
+  padding: 15px 25px 15px 25px;
+  background: #e83b37;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.banner .card-img-overlay a:hover {
+  background: black;
+}
+
+@media (max-width: 767px) {
+  .banner .card-img-overlay {
+    top: 100px;
+    left: 15px;
+  }
+
+  .banner .card-img-overlay h2 {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 0px;
+  }
+
+  .banner .card-img-overlay p {
+    font-size: 18px;
+    padding-bottom: 20px;
+    margin-bottom: 0px;
+  }
+
+  .banner .card-img-overlay a {
+    text-decoration: none;
+    padding: 15px 25px 15px 25px;
+    background: #e83b37;
+    font-size: 15px;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+
+  .banner .card-img-overlay a:hover {
+    background: black;
+  }
+}
+
+.centercontent .card-img-overlay {
+  position: absolute;
+  top: 100px;
+  bottom: 50px;
+  left: 10px;
+}
+
+.centercontent img {
+  opacity: 0.7;
+}
+
+.centercontent p {
+  font-weight: 550;
+}
+
+
+.centercontent .card-img-overlay h5 {
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.maincontent h3 {
+  font-size: 26px;
+}
+
+.maincontent i:hover {
+  background: black;
+  color: white !important;
+}
+
+.bannercontent h2 {
+  font-weight: bold;
+}
+
+.bannercontent a {
+  color: black;
+  font-weight: bold;
+  font-size: 17px;
+}
+
+.bannercontent a:hover {
+  color: #e83b37;
+}
+
+.bannercontent img {
+  width: 100%;
+  height: 400px;
+}
+
+.maincontent .item {
+  border: 1px #dfdcdc solid;
+}
+
+.maincontent h5 {
+  font-size: 18px;
+  color: #8e8e8e;
+}
+
+.maincontent p {
+  font-weight: bold;
+  font-size: 19px;
+  color: #e83b37;
+}
+
+.maincontent span {
+  color: #8e8e8e;
+  font-weight: normal;
+  font-size: 15px;
+  text-decoration: line-through;
+}
+
+.maincontent .item1 {
+  border: 1px #b9b9b9 dashed;
+  padding: 80px;
+}
+
+.maincontent .item1 h4 {
+  color: #161515;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.maincontent img {
+  width: 100%;
+  height: 150px;
+}
+
+.maincontent .item1 p {
+  color: #8e8e8e;
+  font-weight: normal;
+  font-size: 15px;
+}
+
+.maincontent a:hover {
+  color: #e83b37 !important;
+}
+
+.maincontent .card-img-overlay h5 {
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.maincontent .card-img-overlay p {
+  font-weight: normal;
+  font-size: 18px;
+}
+
+.maincontent .card-img-overlay a {
+  color: black;
+  font-weight: bold;
+}
+
+.maincontent .card-img-overlay {
+  top: 210px;
+  bottom: 50px;
+  left: 10px;
+}
+
+.maincontent .link:hover {
+  color: black !important;
+}
+
+@media (max-width: 1920px) {
+  .maincontent .item1 {
+    padding: 90px;
+  }
+}
+
+@media (max-width: 360px) {
+  .banner {
+    zoom: 0.5;
+
+  }
+
+  .banner img {
+    zoom: 0.5;
+  }
+
+  .banner .card-img-overlay {
+    zoom: 0.9;
+  }
+
+  .bannerbottom .card-img-overlay h1 {
+    font-weight: normal;
+  }
+
+  .bannerbottom .card-img-overlay p {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .bannerbottom .card-img-overlay {
+    top: 15px !important;
+  }
+
+  .bannerbottom .card-img-overlay h1 {
+    font-weight: normal;
+  }
+
+  .bannerbottom .card-img-overlay p {
+    display: none;
+  }
+}
+
+.bannerbottom .card-img-overlay {
+  position: absolute;
+  top: 110px;
+  left: 80px;
+}
+
+.bannerbottom .card-img-overlay h1 {
+  font-weight: bold;
+}
+
+.bannerbottom .card-img-overlay p {
+  font-size: 25px;
+  font-weight: normal;
+  color: black !important;
+}
+
+.bannerbottom .card-img-overlay a {
+  text-decoration: none;
+  padding: 17px 22px 17px 22px;
+  color: white;
+  background: #e83b37;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.bannerbottom .card-img-overlay a:hover {
+  background: black;
+}
+
+.bannerbottom p {
+  color: #a1a1a1 !important;
+  font-size: 19px;
+}
+
+@media (max-width: 767px) {
+  .maincontent .card-img-overlay {
+    position: absolute;
+    top: 30px;
+    left: 0px;
+    bottom: 50px;
+  }
+
+  .maincontent .card-img-overlay h5 {
+    font-weight: bold;
+    font-size: 25px;
+  }
+
+  .maincontent .card-img-overlay p {
+    font-weight: normal;
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .maincontent .card-img-overlay a {
+    color: black;
+    font-weight: bold;
+  }
+
+  .maincontent .card {
+    border: none;
+  }
+
+  .bannerbottom .card-img-overlay {
+    position: absolute;
+    margin-top: -120px;
+    left: 15px;
+  }
+
+  .bannerbottom img {
+    height: 250px;
+    width: 100%;
+  }
+
+  .bannerbottom .card-img-overlay h1 {
+    font-weight: bold;
+    font-size: 18px;
+
+  }
+
+  .bannerbottom .card-img-overlay p {
+    font-size: 12px;
+    font-weight: normal;
+  }
+
+  .bannerbottom .card-img-overlay a {
+    text-decoration: none;
+    padding: 14px 22px 14px 22px;
+    color: white;
+    background: #e83b37;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+
+  .centercontent {
+    margin-bottom: -15px;
+  }
+
+  .centercontent .card-img-overlay {
+    position: absolute;
+    top: 5px;
+    left: 0px;
+    bottom: 100px;
+  }
+
+  .centercontent .card-img-overlay h5 {
+    font-weight: bold;
+    font-size: 17px;
+  }
+
+  .centercontent .card-img-overlay p {
+    font-size: 15px;
+    margin-bottom: 0px;
+  }
+}
+
+.bannerbottom {
+  padding-bottom: 50px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.bannerbottom h5 {
+  font-weight: normal;
+  font-size: 25px;
+}
+
+.bannerbottom .btn {
+  color: white;
+  background: #e83b37;
+}
+
+button {
+  padding: 16px 36px;
+}
+
+.btn {
+  font-weight: bold;
+}
+
+.btn:hover {
+  background: black !important;
+}
+
+.line-height{
+  line-height: 1;
+}

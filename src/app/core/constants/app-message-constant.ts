@@ -9,5 +9,6 @@ export const APP_MESSAGE = {
   CHANGE_PASS_SUCCESSFUL: 'Password changed successfully.',
   CREATE_FAILED: 'Create failed.',
   BULK_DELETE_BLANK: 'Cannot be deleted when item is null',
+  BULK_EXPORT_BLANK: 'Cannot be exported when item is null',
   BULK_DELETE: 'Do you want to delete all items?',
 }

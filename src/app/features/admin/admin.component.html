@@ -75,8 +75,8 @@
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMe nuButton">
                   <a class="dropdown-item" (click)="onBulkDelete()">Delete ({{selectionUser.selected.length}}) items</a>
-                  <a class="dropdown-item">Export All</a>
-                  <a class="dropdown-item">Export ({{selectionUser.selected.length}}) items</a>
+                  <a class="dropdown-item" (click)="onExportAll()">Export All</a>
+                  <a class="dropdown-item" (click)="onBulkExport()">Export ({{selectionUser.selected.length}}) items</a>
                 </div>
               </div>
               <div class="create-user">

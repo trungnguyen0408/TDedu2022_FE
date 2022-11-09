@@ -57,16 +57,10 @@ export class RegisterComponent extends BaseComponent implements OnInit {
       this.dialogRef.close();
 
     }, (err) => {
-
-      if (err.error.username && err.error.password) {
-        this.alertMessageService.error(`${err.error.username} / ${err.error.password}`);
-        return
-      }
-      if (err.error.username) {
-        this.alertMessageService.error(err.error.username);
-      } else {
-        this.alertMessageService.error(err.error.password);
-      }
+      this.alertMessageService.error(`${err.error.username ?? ''}
+      ${err.error.password ?? ''} ${err.error.password ?? ''} ${err.error.mobile_phone ?? ''}
+      ${err.error.date_of_birth ?? ''} ${err.error.gender ?? ''}`);
+      return
     })
     this.dialogRef.close();
   }

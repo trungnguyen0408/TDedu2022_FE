@@ -197,10 +197,10 @@ export class AdminComponent extends BaseComponent implements OnInit {
     this.showLoader();
     this.userService.filter(filter).pipe(finalize(() => {
       this.showLoader(false);
-    })).subscribe(reponse => {
-      if (reponse) {
-        this.dataSource.data = reponse.data;
-        this.totalData = reponse.total;
+    })).subscribe(response => {
+      if (response) {
+        this.dataSource.data = response.data;
+        this.totalData = response.total;
       }
     });
   }
@@ -217,5 +217,28 @@ export class AdminComponent extends BaseComponent implements OnInit {
     this.sortFilter.sort_name = sortState.active;
     this.sortFilter.sort_type = sortState.direction;
     this.handleGetUser();
+  }
+
+  onExportAll() {
+    this.showLoader();
+    this.userService.exportAll().pipe(finalize(() => {
+      this.showLoader(false);
+    })).subscribe(response => {
+    })
+  }
+
+  onBulkExport() {
+    if (this.selectionUser.selected.length === 0) {
+      this.alertMessageService.error(APP_MESSAGE.BULK_EXPORT_BLANK);
+      return;
+    }
+
+    let ids = this.getIdsFromUsers(this.selectionUser.selected);
+    this.showLoader();
+    this.userService.bulkExport(ids).pipe(finalize(() => {
+      this.showLoader(false);
+    })).subscribe(response => {
+      this.selectionUser.clear();
+    })
   }
 }

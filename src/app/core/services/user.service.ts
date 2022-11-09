@@ -97,4 +97,24 @@ export class UserService {
       return this.httpClient.delete<any>(url, { headers: headers, body: data });
     return this.httpClient.delete<any>(url);
   }
+
+  public exportAll(): Observable<any> {
+    let headers = this.getHeaders();
+    const url = `${this.REST_API_SERVER}/export-all-user`;
+    if (headers instanceof HttpHeaders)
+      return this.httpClient.get<any>(url, { headers: headers });
+    return this.httpClient.get<any>(url);
+  }
+
+  public bulkExport(ids: string[]): Observable<any> {
+    let headers = this.getHeaders();
+    let params = new HttpParams();
+    for (const id of ids) {
+      params = params.append('user_ids[]', id);
+    }
+    const url = `${this.REST_API_SERVER}/export-user`;
+    if (headers instanceof HttpHeaders)
+      return this.httpClient.get<any>(url, { headers: headers, params: params });
+    return this.httpClient.get<any>(url);
+  }
 }

@@ -5,12 +5,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageChangeEvent } from '@progress/kendo-angular-pager';
+import { finalize } from 'rxjs';
 import { BaseComponent } from 'src/app/core/components/base.component';
 import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
 import { UserStatus } from 'src/app/core/constants/user-status-constant';
 import { ActionType } from 'src/app/core/enums/action-type';
 import { FilterUser } from 'src/app/core/models/filter-user';
 import { SortFilter } from 'src/app/core/models/sort-filter';
+import { UserService } from 'src/app/core/services/user.service';
 import { PreviewPageComponent } from '../preview-page/preview-page.component';
 import { AddOrEditUserOfLecturerComponent } from './add-or-edit-user-of-lecturer/add-or-edit-user-of-lecturer.component';
 
@@ -41,18 +43,7 @@ export class LecturerComponent extends BaseComponent implements OnInit {
   listStatus = UserStatus.Status;
   defaultItem: { text: string, value: string } = { text: 'All', value: '' };
 
-  dataTest: any[] = [{ fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Active' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Banned' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Inactive' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Banned' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Active' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Lecturer', createAt: '03/02/2020', status: 'Banned' },
-  { fullName: 'Nguyen Minh Trung', email: 'trung@yodmail.com', role: 'Student', createAt: '03/02/2020', status: 'Inactive' }];
-
-  constructor(injector: Injector, private dialog: MatDialog) {
+  constructor(injector: Injector, private dialog: MatDialog, private userService: UserService) {
     super(injector);
     this.form = new FormGroup({
       fullName: new FormControl(this.fullName),
@@ -64,8 +55,7 @@ export class LecturerComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dataSource.data = this.dataTest;
-    this.totalData = this.dataTest.length;
+    this.handleGetUser();
   }
 
 
@@ -92,8 +82,8 @@ export class LecturerComponent extends BaseComponent implements OnInit {
     filter.status = this.getFormValue('status');
     filter.created_from = this.formatDate(this.getFormValue('createAtFrom'));
     filter.created_to = this.formatDate(this.getFormValue('createAtTo'));
-    filter.limit = this.pageIndex;
-    filter.page = this.pageSize;
+    filter.page = this.pageIndex;
+    filter.limit = this.pageSize;
     filter.sort_name = this.sortFilter.sort_name;
     filter.sort_type = this.sortFilter.sort_type;
 
@@ -105,14 +95,16 @@ export class LecturerComponent extends BaseComponent implements OnInit {
   }
 
   getUserByFilter(filter: FilterUser) {
-    //call api get by filter
     this.showLoader();
-    setTimeout(() => {
-
+    this.userService.filter(filter).pipe(finalize(() => {
       this.showLoader(false);
-    }, 2000);
+    })).subscribe(response => {
+      if (response) {
+        this.dataSource.data = response.data;
+        this.totalData = response.total;
+      }
+    });
   }
-
 
   isUserInputSubmittedDate(): boolean {
     return this.createAtFrom != null || this.createAtTo != null ? true : false;
@@ -131,9 +123,9 @@ export class LecturerComponent extends BaseComponent implements OnInit {
     this.handleGetUser();
   }
 
-  onPreview() {
+  onPreview(item: any) {
     this.dialog.open(PreviewPageComponent, {
-      data: '123'
+      data: item
     })
   }
 

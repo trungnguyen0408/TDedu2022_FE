@@ -6,6 +6,9 @@ import { UserGender } from 'src/app/core/constants/user-gender-constant';
 import { UserStatus } from 'src/app/core/constants/user-status-constant';
 import { ActionType } from 'src/app/core/enums/action-type';
 import { AccountUser } from 'src/app/core/models/account-user';
+import { UserService } from 'src/app/core/services/user.service';
+import { finalize } from 'rxjs';
+import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
 
 @Component({
   selector: 'app-add-or-edit-user-of-lecturer',
@@ -13,8 +16,10 @@ import { AccountUser } from 'src/app/core/models/account-user';
   styleUrls: ['./add-or-edit-user-of-lecturer.component.scss']
 })
 export class AddOrEditUserOfLecturerComponent extends BaseComponent implements OnInit {
-
-  public formCreateUser = this.formBuilder.group({
+  listGender = UserGender.Genders;
+  listStatus = UserStatus.Status.filter(x => x.text !== 'Banned');
+   
+  formCreateUser = this.formBuilder.group({
     fullName: ['', Validators.required],
     userName: ['', Validators.required],
     email: ['', Validators.required],
@@ -25,27 +30,25 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
   });
 
   public formEditUser = this.formBuilder.group({
-    fullName: [''],
-    userName: [''],
-    email: [''],
-    phone: [''],
-    dob: [''],
-    address: [''],
-    gender: [''],
-    status: [''],
+    fullName: [this.data.user.full_name ??''],
+    userName: [this.data.user.username ??''],
+    email: [this.data.user.email ??''],
+    phone: [this.data.user.mobile_phone ??''],
+    dob: [new Date(this.data.user.date_of_birth) ?? ''],
+    address: [this.data.user.address ??''],
+    gender: [this.data.user.gender ??''],
+    status: [this.data.user.status ??''],
   });
 
-  listGender = UserGender.Genders;
-  listStatus = UserStatus.Status.filter(x => x.text !== 'Banned');
-  actionType: ActionType = ActionType.none;
-
-  constructor(injector: Injector, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddOrEditUserOfLecturerComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ActionType) {
+  
+  constructor(injector: Injector, private userService: UserService, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddOrEditUserOfLecturerComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any) {
     super(injector);
   }
 
+
   ngOnInit(): void {
-    this.actionType = this.data;
+   
   }
 
   getPageType() {
@@ -66,7 +69,18 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
     addUser.address = this.formCreateUser.value.address;
     addUser.gender = this.formCreateUser.value.gender;
     addUser.role = 'Student';
-    //call api
+    this.showLoader();
+    this.userService.create(addUser)
+      .pipe(finalize(() => {
+        this.showLoader(false);
+      }))
+      .subscribe(response => {
+        if (response) {
+          this.alertMessageService.success(APP_MESSAGE.CREATE_USER_SUCCESSFULL);
+        }
+      }, (err) => {
+        this.alertMessageService.error(APP_MESSAGE.CREATE_FAILED);
+      })
   }
 
   onEdit() {
@@ -79,7 +93,17 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
     editUser.address = this.formEditUser.value.address;
     editUser.gender = this.formEditUser.value.gender;
     editUser.status = this.formEditUser.value.status;
-    //call api
+    editUser.role =  'Student';
+    this.showLoader();
+    this.userService.update(editUser, this.data.user.id)
+      .pipe(finalize(() => {
+        this.showLoader(false);
+      }))
+      .subscribe(response => {
+        if (response) {
+          this.alertMessageService.success(APP_MESSAGE.SAVE_SUCCESSFULL);
+        }
+      })
   }
 
 }

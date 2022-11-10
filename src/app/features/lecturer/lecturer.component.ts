@@ -129,15 +129,27 @@ export class LecturerComponent extends BaseComponent implements OnInit {
     })
   }
 
-  onEdit() {
-    this.dialog.open(AddOrEditUserOfLecturerComponent, {
-      data: ActionType.edit
+  onEdit(item: any) {
+    const dialogRef = this.dialog.open(AddOrEditUserOfLecturerComponent, {
+      data: { type: ActionType.edit, user: item ?? '' },
     })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.handleGetUser();
+      }
+    });
   }
 
   onCreate() {
-    this.dialog.open(AddOrEditUserOfLecturerComponent, {
-      data: ActionType.add
+    const dialogRef = this.dialog.open(AddOrEditUserOfLecturerComponent, {
+      data: { type: ActionType.add, user: {} },
     })
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.handleGetUser();
+      }
+    });
   }
 }

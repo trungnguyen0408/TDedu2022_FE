@@ -18,6 +18,9 @@ import { Sort } from '@angular/material/sort';
 import { finalize } from 'rxjs';
 import { AccountUser } from 'src/app/core/models/account-user';
 import { DialogConfirmComponent } from 'src/app/core/components/dialog-confirm/dialog-confirm.component';
+import * as FileSaver from 'file-saver';
+
+const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
 @Component({
   selector: 'app-admin',
@@ -224,7 +227,16 @@ export class AdminComponent extends BaseComponent implements OnInit {
     this.userService.exportAll().pipe(finalize(() => {
       this.showLoader(false);
     })).subscribe(response => {
+      this.downloadFile(response, 'all_user_information.xlsx')
     })
+  }
+
+  downloadFile(data: any, fileName: string = 'users_information.xlsx') {
+    const myBlob: Blob = new Blob([data], {
+      type: EXCEL_TYPE
+    });
+    console.log(myBlob);
+    FileSaver.saveAs(myBlob, fileName);
   }
 
   onBulkExport() {
@@ -238,6 +250,7 @@ export class AdminComponent extends BaseComponent implements OnInit {
     this.userService.bulkExport(ids).pipe(finalize(() => {
       this.showLoader(false);
     })).subscribe(response => {
+      this.downloadFile(response);
       this.selectionUser.clear();
     })
   }

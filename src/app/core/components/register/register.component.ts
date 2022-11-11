@@ -55,14 +55,10 @@ export class RegisterComponent extends BaseComponent implements OnInit {
     })).subscribe(() => {
       this.alertMessageService.success(APP_MESSAGE.REGISTER_SUCCESSFULL);
       this.dialogRef.close();
-
     }, (err) => {
-      this.alertMessageService.error(`${err.error.username ?? ''}
-      ${err.error.password ?? ''} ${err.error.password ?? ''} ${err.error.mobile_phone ?? ''}
-      ${err.error.date_of_birth ?? ''} ${err.error.gender ?? ''}`);
+      this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
       return
     })
-    this.dialogRef.close();
   }
 
   onForgot() {

@@ -63,15 +63,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
         }
       }, (err) => {
         this.loginForm.reset();
-        if (err.error.username && err.error.password) {
-          this.alertMessageService.error(`${err.error.username} / ${err.error.password}`);
-          return
-        }
-        if (err.error.username) {
-          this.alertMessageService.error(err.error.username);
-        } else {
-          this.alertMessageService.error(err.error.password);
-        }
+        this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
       })
   }
 }

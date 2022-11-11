@@ -103,7 +103,6 @@ export class UserService {
   public exportAll(): Observable<any> {
     let headers = this.getHeaders();
     const url = `${this.REST_API_SERVER}/export-all-user`;
-    console.log(headers);
 
     if (headers instanceof HttpHeaders)
       return this.httpClient.get<any>(url, { headers: headers, responseType: 'blob' as 'json' });

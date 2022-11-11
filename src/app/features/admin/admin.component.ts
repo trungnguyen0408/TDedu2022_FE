@@ -235,7 +235,6 @@ export class AdminComponent extends BaseComponent implements OnInit {
     const myBlob: Blob = new Blob([data], {
       type: EXCEL_TYPE
     });
-    console.log(myBlob);
     FileSaver.saveAs(myBlob, fileName);
   }
 

@@ -49,7 +49,7 @@ export class UserService {
     const data = {
       username: item.username,
       full_name: item.full_name,
-      address : item.address,
+      address: item.address,
       mobile_phone: item.mobile_phone,
       date_of_birth: item.date_of_birth,
       gender: item.gender,
@@ -67,7 +67,7 @@ export class UserService {
     const data = {
       email: item.email,
       username: item.username,
-      address : item.address,
+      address: item.address,
       full_name: item.full_name,
       mobile_phone: item.mobile_phone,
       date_of_birth: item.date_of_birth,
@@ -103,8 +103,9 @@ export class UserService {
   public exportAll(): Observable<any> {
     let headers = this.getHeaders();
     const url = `${this.REST_API_SERVER}/export-all-user`;
+
     if (headers instanceof HttpHeaders)
-      return this.httpClient.get<any>(url, { headers: headers });
+      return this.httpClient.get<any>(url, { headers: headers, responseType: 'blob' as 'json' });
     return this.httpClient.get<any>(url);
   }
 
@@ -116,7 +117,7 @@ export class UserService {
     }
     const url = `${this.REST_API_SERVER}/export-user`;
     if (headers instanceof HttpHeaders)
-      return this.httpClient.get<any>(url, { headers: headers, params: params });
+      return this.httpClient.get<any>(url, { headers: headers, params: params, responseType: 'blob' as 'json' });
     return this.httpClient.get<any>(url);
   }
 }

@@ -18,7 +18,7 @@ import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
 export class AddOrEditUserOfLecturerComponent extends BaseComponent implements OnInit {
   listGender = UserGender.Genders;
   listStatus = UserStatus.Status.filter(x => x.text !== 'Banned');
-   
+
   formCreateUser = this.formBuilder.group({
     fullName: ['', Validators.required],
     userName: ['', Validators.required],
@@ -30,25 +30,22 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
   });
 
   public formEditUser = this.formBuilder.group({
-    fullName: [this.data.user.full_name ??''],
-    userName: [this.data.user.username ??''],
-    email: [this.data.user.email ??''],
-    phone: [this.data.user.mobile_phone ??''],
+    fullName: [this.data.user.full_name ?? ''],
+    userName: [this.data.user.username ?? ''],
+    email: [this.data.user.email ?? ''],
+    phone: [this.data.user.mobile_phone ?? ''],
     dob: [new Date(this.data.user.date_of_birth) ?? ''],
-    address: [this.data.user.address ??''],
-    gender: [this.data.user.gender ??''],
-    status: [this.data.user.status ??''],
+    address: [this.data.user.address ?? ''],
+    gender: [this.data.user.gender ?? ''],
+    status: [this.data.user.status ?? ''],
   });
 
-  
   constructor(injector: Injector, private userService: UserService, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddOrEditUserOfLecturerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     super(injector);
   }
 
-
   ngOnInit(): void {
-   
   }
 
   getPageType() {
@@ -79,7 +76,7 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
           this.alertMessageService.success(APP_MESSAGE.CREATE_USER_SUCCESSFULL);
         }
       }, (err) => {
-        this.alertMessageService.error(APP_MESSAGE.CREATE_FAILED);
+        this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
       })
   }
 
@@ -93,7 +90,7 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
     editUser.address = this.formEditUser.value.address;
     editUser.gender = this.formEditUser.value.gender;
     editUser.status = this.formEditUser.value.status;
-    editUser.role =  'Student';
+    editUser.role = 'Student';
     this.showLoader();
     this.userService.update(editUser, this.data.user.id)
       .pipe(finalize(() => {
@@ -103,7 +100,8 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
         if (response) {
           this.alertMessageService.success(APP_MESSAGE.SAVE_SUCCESSFULL);
         }
+      }, (err) => {
+        this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
       })
   }
-
 }

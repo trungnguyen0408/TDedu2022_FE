@@ -40,6 +40,8 @@ export class ResetPasswordComponent extends BaseComponent implements OnInit {
         this.alertMessageService.success(data.message);
         this.onBackLogin();
       }
+    }, (err) => {
+      this.alertMessageService.error(`${err.error.password[0] ?? ''}`);
     })
   }
 

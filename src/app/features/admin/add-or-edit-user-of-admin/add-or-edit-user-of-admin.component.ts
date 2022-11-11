@@ -83,7 +83,7 @@ export class AddOrEditUserOfAdminComponent extends BaseComponent implements OnIn
           this.alertMessageService.success(APP_MESSAGE.CREATE_USER_SUCCESSFULL);
         }
       }, (err) => {
-        this.alertMessageService.error(APP_MESSAGE.CREATE_FAILED);
+        this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
       })
   }
 
@@ -110,6 +110,8 @@ export class AddOrEditUserOfAdminComponent extends BaseComponent implements OnIn
         if (response) {
           this.alertMessageService.success(APP_MESSAGE.SAVE_SUCCESSFULL);
         }
+      }, (err) => {
+        this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
       })
   }
 }

@@ -39,14 +39,6 @@
           </mat-form-field>
         </div>
         <div class="col-12 col-md-4 col-xl-4">
-          <mat-form-field class="w-100" appearance="fill">
-            <mat-label>Address</mat-label>
-            <input formControlName="address" placeholder="Enter address..." matInput>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row pt-3">
-        <div class="col-12 col-md-12 col-xl-12">
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Gender</mat-label>
             <mat-select formControlName="gender">
@@ -54,6 +46,14 @@
                 {{status.text}}
               </mat-option>
             </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row pt-3">
+        <div class="col-12 col-md-12 col-xl-12">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>Address</mat-label>
+            <input formControlName="address" placeholder="Enter address..." matInput>
           </mat-form-field>
         </div>
       </div>

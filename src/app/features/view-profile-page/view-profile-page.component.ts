@@ -46,9 +46,7 @@ export class ViewProfilePageComponent extends BaseComponent implements OnInit {
           this.account.date_of_birth = this.formatDate(new Date(data.date_of_birth), "MM-DD-YYYY");
           this.alertMessageService.success(APP_MESSAGE.SAVE_SUCCESSFULL);
         }, (err) => {
-          this.alertMessageService.error(`${err.error.username ?? ''}
-          ${err.error.full_name ?? ''}
-          ${err.error.mobile_phone ?? ''}`);
+          this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
         })
       }
     });
@@ -69,8 +67,7 @@ export class ViewProfilePageComponent extends BaseComponent implements OnInit {
           .subscribe(data => {
             this.alertMessageService.success(APP_MESSAGE.CHANGE_PASS_SUCCESSFUL);
           }, (err) => {
-            this.alertMessageService.error(`${err.error.old_password ?? ''}
-            ${err.error.new_password ?? ''}`);
+            this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
           });
       }
     });

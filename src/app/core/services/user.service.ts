@@ -49,6 +49,7 @@ export class UserService {
     const data = {
       username: item.username,
       full_name: item.full_name,
+      address : item.address,
       mobile_phone: item.mobile_phone,
       date_of_birth: item.date_of_birth,
       gender: item.gender,

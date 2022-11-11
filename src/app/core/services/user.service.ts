@@ -67,6 +67,7 @@ export class UserService {
     const data = {
       email: item.email,
       username: item.username,
+      address : item.address,
       full_name: item.full_name,
       mobile_phone: item.mobile_phone,
       date_of_birth: item.date_of_birth,

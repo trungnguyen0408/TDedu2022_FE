@@ -17,7 +17,6 @@ export class AuthGuard implements CanActivate {
       take(1),
       map((isLoggedIn: boolean) => {
         if (!isLoggedIn) {
-          state.url === '/reset-password' ? this.router.navigate(['reset-password']) : this.router.navigate(['']);
           return false;
         }
         return true;

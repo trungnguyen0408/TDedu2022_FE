@@ -22,10 +22,15 @@ export class ResetPasswordComponent extends BaseComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.tokenTemp = params['token'];
     });
+    this.isLogin();
+  }
 
-    if (!this.tokenTemp) {
-      this.router.navigate(['']);
-    }
+  isLogin() {
+    this.authService.isLoggedIn$.subscribe(response => {
+      if (response || !this.tokenTemp) {
+        this.router.navigate(['']);
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -41,6 +46,10 @@ export class ResetPasswordComponent extends BaseComponent implements OnInit {
         this.onBackLogin();
       }
     }, (err) => {
+      if (err.error.token) {
+        this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
+        return
+      }
       this.alertMessageService.error(`${err.error.password[0] ?? ''}`);
     })
   }

@@ -91,6 +91,8 @@ export class AdminComponent extends BaseComponent implements OnInit {
             this.selectionUser.clear();
             this.handleGetUser();
           }
+        }, (err) => {
+          this.alertMessageService.error(APP_MESSAGE.BULK_DELETE_ERROR);
         })
       }
     });
@@ -163,6 +165,8 @@ export class AdminComponent extends BaseComponent implements OnInit {
             this.alertMessageService.success(APP_MESSAGE.DELETE_SUCCESSFULL);
             this.handleGetUser();
           }
+        }, (err) => {
+          this.alertMessageService.error(APP_MESSAGE.BULK_DELETE_ERROR);
         })
       }
     });
@@ -228,7 +232,7 @@ export class AdminComponent extends BaseComponent implements OnInit {
       this.showLoader(false);
     })).subscribe(response => {
       this.downloadFile(response, 'all_user_information.xlsx')
-    })
+    });
   }
 
   downloadFile(data: any, fileName: string = 'users_information.xlsx') {
@@ -251,6 +255,8 @@ export class AdminComponent extends BaseComponent implements OnInit {
     })).subscribe(response => {
       this.downloadFile(response);
       this.selectionUser.clear();
+    }, (err) => {
+      this.alertMessageService.error(APP_MESSAGE.BULK_EXPORT_ERROR);
     })
   }
 }

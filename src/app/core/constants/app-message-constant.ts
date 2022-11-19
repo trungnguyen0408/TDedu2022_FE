@@ -11,4 +11,6 @@ export const APP_MESSAGE = {
   BULK_DELETE_BLANK: 'Cannot be deleted when item is null',
   BULK_EXPORT_BLANK: 'Cannot be exported when item is null',
   BULK_DELETE: 'Do you want to delete all items?',
+  BULK_EXPORT_ERROR: 'The export has an issue, don\'t can export the file.',
+  BULK_DELETE_ERROR: 'The delete has an issue, don\'t can delete the items.',
 }

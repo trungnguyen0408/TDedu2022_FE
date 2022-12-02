@@ -150,9 +150,13 @@
           </mat-form-field>
         </div>
         <div class="col-12 col-md-4 col-xl-4">
-          <mat-form-field *ngIf="formEditUser.value.status === 'Banned' " class="w-100" appearance="fill">
+          <mat-form-field *ngIf="formEditUser.value.status === 'Banned' " appearance="fill" class="w-100">
             <mat-label>Duration</mat-label>
-            <input formControlName="duration" placeholder="Enter duration..." matInput>
+            <mat-select formControlName="duration">
+              <mat-option *ngFor="let duration of listDuration" [value]="duration.value">
+                {{duration.text}}
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
       </div>
@@ -168,6 +172,8 @@
   </div>
   <div mat-dialog-actions align="end">
     <button class="btn mr-4" (click)="onClose()">Cancel</button>
-    <button class="btn btn-primary" [mat-dialog-close]="true" cdkFocusInitial (click)="onEdit()">Save</button>
+    <button class="btn btn-primary" [mat-dialog-close]="true" cdkFocusInitial
+      [disabled]="formEditUser.value.status === 'Banned' && !formEditUser.value.duration"
+      (click)="onEdit()">Save</button>
   </div>
 </form>

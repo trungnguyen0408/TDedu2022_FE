@@ -26,9 +26,8 @@ export class UserService {
       .set('role', filter.role)
       .set('created_from', filter.created_from)
       .set('created_to', filter.created_to)
-      .set('sort_name', filter.sort_name)
-      .set('sort_type', filter.sort_type)
       .set('email', filter.email)
+      .set('full_name', filter.fullName)
       .set('status', filter.status);
 
     const url = `${this.REST_API_SERVER}/user`;
@@ -54,7 +53,9 @@ export class UserService {
       date_of_birth: item.date_of_birth,
       gender: item.gender,
       role: item.role,
-      status: item.status
+      status: item.status,
+      duration: item.duration,
+      reason_ban: item.reasonBan
     }
     const headers = this.getHeaders();
     const url = `${this.REST_API_SERVER}/user/${id}`;
@@ -118,6 +119,14 @@ export class UserService {
     const url = `${this.REST_API_SERVER}/export-user`;
     if (headers instanceof HttpHeaders)
       return this.httpClient.get<any>(url, { headers: headers, params: params, responseType: 'blob' as 'json' });
+    return this.httpClient.get<any>(url);
+  }
+
+  public getBanHistory(idUser: string): Observable<any> {
+    let headers = this.getHeaders();
+    const url = `${this.REST_API_SERVER}/ban-history/${idUser}`;
+    if (headers instanceof HttpHeaders)
+      return this.httpClient.get<any>(url, { headers: headers });
     return this.httpClient.get<any>(url);
   }
 }

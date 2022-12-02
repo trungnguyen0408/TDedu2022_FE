@@ -45,4 +45,29 @@ export abstract class BaseComponent {
     }
     return result;
   }
+
+  convertValueToCharOfDuration(value: string) {
+    let result: string = '';
+    switch (value) {
+      case '5 minutes':
+        result = '5m'
+        break;
+      case '10 minutes':
+        result = '10m'
+        break;
+      case '15 minutes':
+        result = '15m'
+        break;
+      case '30 minutes':
+        result = '30m'
+        break;
+      case '1 hours':
+        result = '1hours'
+        break;
+      case 'Until updated':
+        result = 'until_update'
+        break;
+    }
+    return result;
+  }
 }

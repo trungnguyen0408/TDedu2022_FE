@@ -1,5 +1,5 @@
 import { Component, Inject, Injector, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BaseComponent } from 'src/app/core/components/base.component';
 import { UserGender } from 'src/app/core/constants/user-gender-constant';
@@ -9,6 +9,7 @@ import { AccountUser } from 'src/app/core/models/account-user';
 import { UserService } from 'src/app/core/services/user.service';
 import { finalize } from 'rxjs';
 import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
+import { UserDuration } from 'src/app/core/constants/user-duration-constant';
 
 @Component({
   selector: 'app-add-or-edit-user-of-lecturer',
@@ -17,7 +18,8 @@ import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
 })
 export class AddOrEditUserOfLecturerComponent extends BaseComponent implements OnInit {
   listGender = UserGender.Genders;
-  listStatus = UserStatus.Status.filter(x => x.text !== 'Banned');
+  listStatus = UserStatus.Status;
+  listDuration = UserDuration.Durations;
 
   formCreateUser = this.formBuilder.group({
     fullName: ['', Validators.required],
@@ -28,21 +30,23 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
     address: ['', Validators.required],
     gender: ['', Validators.required],
   });
-
-  public formEditUser = this.formBuilder.group({
-    fullName: [this.data.user.full_name ?? ''],
-    userName: [this.data.user.username ?? ''],
-    email: [this.data.user.email ?? ''],
-    phone: [this.data.user.mobile_phone ?? ''],
-    dob: [new Date(this.data.user.date_of_birth) ?? ''],
-    address: [this.data.user.address ?? ''],
-    gender: [this.data.user.gender ?? ''],
-    status: [this.data.user.status ?? ''],
-  });
+  public formEditUser: FormGroup;
 
   constructor(injector: Injector, private userService: UserService, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddOrEditUserOfLecturerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     super(injector);
+    this.formEditUser = new FormGroup({
+      fullName: new FormControl(this.data.user.full_name ?? ''),
+      userName: new FormControl(this.data.user.username ?? ''),
+      mobile_phone: new FormControl(this.data.user.mobile_phone ?? ''),
+      dob: new FormControl(new Date(this.data.user.date_of_birth) ?? ''),
+      address: new FormControl(this.data.user.address ?? ''),
+      gender: new FormControl(this.data.user.gender ?? ''),
+      status: new FormControl(this.data.user.status ?? ''),
+      role: new FormControl(this.data.user.role ? this.data.user.role[0] : ''),
+      duration: new FormControl(this.data.user.is_ban ? this.convertValueToCharOfDuration(this.data.user.is_ban.duration) : ''),
+      reasonBan: new FormControl(this.data.user.is_ban ? this.data.user.is_ban.comment : ''),
+    });
   }
 
   ngOnInit(): void {
@@ -84,12 +88,13 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
     const editUser = new AccountUser();
     editUser.full_name = this.formEditUser.value.fullName;
     editUser.username = this.formEditUser.value.userName;
-    editUser.email = this.formEditUser.value.email;
-    editUser.mobile_phone = this.formEditUser.value.phone;
+    editUser.mobile_phone = this.formEditUser.value.mobile_phone;
     editUser.date_of_birth = this.formatDate(this.formEditUser.value.dob);
     editUser.address = this.formEditUser.value.address;
     editUser.gender = this.formEditUser.value.gender;
     editUser.status = this.formEditUser.value.status;
+    editUser.duration = this.formEditUser.value.duration;
+    editUser.reasonBan = this.formEditUser.value.reasonBan;
     editUser.role = 'Student';
     this.showLoader();
     this.userService.update(editUser, this.data.user.id)

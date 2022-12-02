@@ -1,9 +1,10 @@
 import { Component, Inject, Injector, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { finalize } from 'rxjs';
 import { BaseComponent } from 'src/app/core/components/base.component';
 import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
+import { UserDuration } from 'src/app/core/constants/user-duration-constant';
 import { UserGender } from 'src/app/core/constants/user-gender-constant';
 import { UserRole } from 'src/app/core/constants/user-role-constant';
 import { UserStatus } from 'src/app/core/constants/user-status-constant';
@@ -20,6 +21,7 @@ export class AddOrEditUserOfAdminComponent extends BaseComponent implements OnIn
   listGender = UserGender.Genders;
   listStatus = UserStatus.Status;
   listRole = UserRole.Roles;
+  listDuration = UserDuration.Durations;
   actionType: ActionType = ActionType.none;
 
   formCreateUser = this.formBuilder.group({
@@ -33,22 +35,24 @@ export class AddOrEditUserOfAdminComponent extends BaseComponent implements OnIn
     role: ['', Validators.required],
   });
 
-  public formEditUser = this.formBuilder.group({
-    fullName: [this.data.user.full_name ?? ''],
-    userName: [this.data.user.username ?? ''],
-    phone: [this.data.user.mobile_phone ?? ''],
-    dob: [new Date(this.data.user.date_of_birth) ?? ''],
-    address: [this.data.user.address ?? ''],
-    gender: [this.data.user.gender ?? ''],
-    status: [this.data.user.status ?? ''],
-    role: [this.data.user.role ? this.data.user.role[0] : ''],
-    duration: [this.data.user.duration ?? ''],
-    reasonBan: [this.data.user.reason_ban ?? '']
-  });
+  public formEditUser: FormGroup;
 
   constructor(injector: Injector, private userService: UserService, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddOrEditUserOfAdminComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     super(injector);
+
+    this.formEditUser = new FormGroup({
+      fullName: new FormControl(this.data.user.full_name ?? ''),
+      userName: new FormControl(this.data.user.username ?? ''),
+      phone: new FormControl(this.data.user.mobile_phone ?? ''),
+      dob: new FormControl(new Date(this.data.user.date_of_birth) ?? ''),
+      address: new FormControl(this.data.user.address ?? ''),
+      gender: new FormControl(this.data.user.gender ?? ''),
+      status: new FormControl(this.data.user.status ?? ''),
+      role: new FormControl(this.data.user.role ? this.data.user.role[0] : ''),
+      duration: new FormControl(this.data.user.is_ban ? this.convertValueToCharOfDuration(this.data.user.is_ban.duration) : ''),
+      reasonBan: new FormControl(this.data.user.is_ban ? this.data.user.is_ban.comment : ''),
+    });
   }
 
   ngOnInit(): void {

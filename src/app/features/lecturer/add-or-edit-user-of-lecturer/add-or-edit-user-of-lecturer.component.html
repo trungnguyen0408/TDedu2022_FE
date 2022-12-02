@@ -84,18 +84,12 @@
         </div>
         <div class="col-12 col-md-4 col-xl-4">
           <mat-form-field class="w-100" appearance="fill">
-            <mat-label>Email</mat-label>
-            <input formControlName="email" placeholder="Enter email..." matInput>
+            <mat-label>Phone</mat-label>
+            <input formControlName="mobile_phone" placeholder="Enter phone..." matInput>
           </mat-form-field>
         </div>
       </div>
       <div class="row pt-3">
-        <div class="col-12 col-md-4 col-xl-4">
-          <mat-form-field class="w-100" appearance="fill">
-            <mat-label>Phone</mat-label>
-            <input formControlName="phone" placeholder="Enter phone..." matInput>
-          </mat-form-field>
-        </div>
         <div class="col-12 col-md-4 col-xl-4">
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Choose a date of birth</mat-label>
@@ -111,8 +105,6 @@
             <input formControlName="address" placeholder="Enter address..." matInput>
           </mat-form-field>
         </div>
-      </div>
-      <div class="row pt-3">
         <div class="col-12 col-md-4 col-xl-4">
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Gender</mat-label>
@@ -123,6 +115,8 @@
             </mat-select>
           </mat-form-field>
         </div>
+      </div>
+      <div class="row pt-3">
         <div class="col-12 col-md-4 col-xl-4">
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Status</mat-label>
@@ -133,11 +127,31 @@
             </mat-select>
           </mat-form-field>
         </div>
+        <div class="col-12 col-md-4 col-xl-4">
+          <mat-form-field *ngIf="formEditUser.value.status === 'Banned' " appearance="fill" class="w-100">
+            <mat-label>Duration</mat-label>
+            <mat-select formControlName="duration">
+              <mat-option *ngFor="let duration of listDuration" [value]="duration.value">
+                {{duration.text}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row py-3">
+        <div class="col-12 col-md-12 col-xl-12">
+          <mat-form-field *ngIf="formEditUser.value.status === 'Banned' " class="w-100" appearance="fill">
+            <mat-label>Reason Ban</mat-label>
+            <textarea matInput formControlName="reasonBan"></textarea>
+          </mat-form-field>
+        </div>
       </div>
     </div>
   </div>
   <div mat-dialog-actions align="end">
     <button class="btn mr-4" (click)="onClose()">Cancel</button>
-    <button class="btn btn-primary" [mat-dialog-close]="true" cdkFocusInitial (click)="onEdit()">Save</button>
+    <button class="btn btn-primary" [mat-dialog-close]="true"
+      [disabled]="formEditUser.value.status === 'Banned' && !formEditUser.value.duration" cdkFocusInitial
+      (click)="onEdit()">Save</button>
   </div>
 </form>

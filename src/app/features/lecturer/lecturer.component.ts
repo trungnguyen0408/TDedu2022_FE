@@ -26,15 +26,15 @@ export class LecturerComponent extends BaseComponent implements OnInit {
   displayedColumns: string[] = ['full_name', 'email', 'role', 'created_at', 'status', 'preview', 'edit'];
   dataSource = new MatTableDataSource<any>();
   form: FormGroup;
-  fullName: string = '';
-  email: string = '';
-  status: string = '';
-  createAtFrom?: Date;
-  createAtTo?: Date;
+  fullName: string;
+  email: string;
+  status: string;
+  createAtFrom: Date;
+  createAtTo: Date;
   skip: number = 0;
   pageSize: number = 10;
   pageIndex: number = 1;
-  totalData: number = 0;
+  totalData: number;
   selectionUser = new SelectionModel<any>(true, []);
   sortFilter: SortFilter = {
     sort_name: '',
@@ -84,8 +84,6 @@ export class LecturerComponent extends BaseComponent implements OnInit {
     filter.created_to = this.formatDate(this.getFormValue('createAtTo'));
     filter.page = this.pageIndex;
     filter.limit = this.pageSize;
-    filter.sort_name = this.sortFilter.sort_name;
-    filter.sort_type = this.sortFilter.sort_type;
 
     this.getUserByFilter(filter);
   }
@@ -117,28 +115,46 @@ export class LecturerComponent extends BaseComponent implements OnInit {
     this.handleGetUser();
   }
 
-  sortData(sortState: Sort) {
-    this.sortFilter.sort_name = sortState.active;
-    this.sortFilter.sort_type = sortState.direction;
-    this.handleGetUser();
-  }
-
   onPreview(item: any) {
-    this.dialog.open(PreviewPageComponent, {
-      data: item
-    })
+    this.showLoader();
+    this.userService.getById(item.id)
+      .pipe(finalize(() => {
+        this.showLoader(false);
+      }))
+      .subscribe((responses) => {
+        if (responses) {
+          const dialogRef = this.dialog.open(PreviewPageComponent, {
+            data: responses
+          });
+
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              this.handleGetUser();
+            }
+          });
+        }
+      });
   }
 
   onEdit(item: any) {
-    const dialogRef = this.dialog.open(AddOrEditUserOfLecturerComponent, {
-      data: { type: ActionType.edit, user: item ?? '' },
-    })
+    this.showLoader();
+    this.userService.getById(item.id)
+      .pipe(finalize(() => {
+        this.showLoader(false);
+      }))
+      .subscribe((responses) => {
+        if (responses) {
+          const dialogRef = this.dialog.open(AddOrEditUserOfLecturerComponent, {
+            data: { type: ActionType.edit, user: responses },
+          });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.handleGetUser();
-      }
-    });
+          dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+              this.handleGetUser();
+            }
+          });
+        }
+      });
   }
 
   onCreate() {

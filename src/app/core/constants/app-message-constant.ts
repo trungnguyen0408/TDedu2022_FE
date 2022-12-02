@@ -13,4 +13,5 @@ export const APP_MESSAGE = {
   BULK_DELETE: 'Do you want to delete all items?',
   BULK_EXPORT_ERROR: 'The export has an issue, don\'t can export the file.',
   BULK_DELETE_ERROR: 'The delete has an issue, don\'t can delete the items.',
+  BANNED: 'This account was banned by an others!'
 }

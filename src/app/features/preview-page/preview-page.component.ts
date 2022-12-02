@@ -1,9 +1,14 @@
 import { Component, Inject, Injector, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { BaseComponent } from 'src/app/core/components/base.component';
+import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
+import { STATUS_BAN } from 'src/app/core/constants/status-ban-constant';
 import { AccountUser } from 'src/app/core/models/account-user';
 import { BanHistoryUser } from 'src/app/core/models/ban-history-user';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { LocalStorageService } from 'src/app/core/services/localStorage.service';
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
@@ -15,7 +20,7 @@ export class PreviewPageComponent extends BaseComponent implements OnInit {
   user: AccountUser = new AccountUser();
   listBanHistory: BanHistoryUser[] = [];
 
-  constructor(injector: Injector, private userService: UserService, public dialogRef: MatDialogRef<PreviewPageComponent>,
+  constructor(injector: Injector, public localStorageService: LocalStorageService, private router: Router, private authService: AuthService, private userService: UserService, public dialogRef: MatDialogRef<PreviewPageComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     super(injector);
   }
@@ -44,6 +49,18 @@ export class PreviewPageComponent extends BaseComponent implements OnInit {
             this.listBanHistory.push(banHistory);
           });
         }
+      }, (err) => {
+        if (err.error[Object.keys(err.error)[0]] ?? '' === STATUS_BAN.UNAUTHORIZED) {
+          this.alertMessageService.error(APP_MESSAGE.BANNED);
+          this.authService.logOut().subscribe(data => {
+            if (data) {
+              this.localStorageService.removeAll();
+              this.authService.loggedIn$.next(false);
+              this.router.navigate(['']);
+            }
+          });
+        }
+        this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
       })
     }
   }

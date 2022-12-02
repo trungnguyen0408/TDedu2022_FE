@@ -2,16 +2,19 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { PageChangeEvent } from '@progress/kendo-angular-pager';
 import { finalize } from 'rxjs';
 import { BaseComponent } from 'src/app/core/components/base.component';
 import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
+import { STATUS_BAN } from 'src/app/core/constants/status-ban-constant';
 import { UserStatus } from 'src/app/core/constants/user-status-constant';
 import { ActionType } from 'src/app/core/enums/action-type';
 import { FilterUser } from 'src/app/core/models/filter-user';
 import { SortFilter } from 'src/app/core/models/sort-filter';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { LocalStorageService } from 'src/app/core/services/localStorage.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { PreviewPageComponent } from '../preview-page/preview-page.component';
 import { AddOrEditUserOfLecturerComponent } from './add-or-edit-user-of-lecturer/add-or-edit-user-of-lecturer.component';
@@ -43,7 +46,7 @@ export class LecturerComponent extends BaseComponent implements OnInit {
   listStatus = UserStatus.Status;
   defaultItem: { text: string, value: string } = { text: 'All', value: '' };
 
-  constructor(injector: Injector, private dialog: MatDialog, private userService: UserService) {
+  constructor(injector: Injector, public localStorageService: LocalStorageService, private router: Router, private authService: AuthService, private dialog: MatDialog, private userService: UserService) {
     super(injector);
     this.form = new FormGroup({
       fullName: new FormControl(this.fullName),
@@ -101,6 +104,17 @@ export class LecturerComponent extends BaseComponent implements OnInit {
         this.dataSource.data = response.data;
         this.totalData = response.total;
       }
+    }, (err) => {
+      if (err.error[Object.keys(err.error)[0]] ?? '' === STATUS_BAN.UNAUTHORIZED) {
+        this.alertMessageService.error(APP_MESSAGE.BANNED);
+        this.authService.logOut().subscribe(data => {
+          if (data) {
+            this.localStorageService.removeAll();
+            this.authService.loggedIn$.next(false);
+            this.router.navigate(['']);
+          }
+        });
+      }
     });
   }
 
@@ -133,6 +147,17 @@ export class LecturerComponent extends BaseComponent implements OnInit {
             }
           });
         }
+      }, (err) => {
+        if (err.error[Object.keys(err.error)[0]] ?? '' === STATUS_BAN.UNAUTHORIZED) {
+          this.alertMessageService.error(APP_MESSAGE.BANNED);
+          this.authService.logOut().subscribe(data => {
+            if (data) {
+              this.localStorageService.removeAll();
+              this.authService.loggedIn$.next(false);
+              this.router.navigate(['']);
+            }
+          });
+        }
       });
   }
 
@@ -151,6 +176,17 @@ export class LecturerComponent extends BaseComponent implements OnInit {
           dialogRef.afterClosed().subscribe(result => {
             if (result) {
               this.handleGetUser();
+            }
+          });
+        }
+      }, (err) => {
+        if (err.error[Object.keys(err.error)[0]] ?? '' === STATUS_BAN.UNAUTHORIZED) {
+          this.alertMessageService.error(APP_MESSAGE.BANNED);
+          this.authService.logOut().subscribe(data => {
+            if (data) {
+              this.localStorageService.removeAll();
+              this.authService.loggedIn$.next(false);
+              this.router.navigate(['']);
             }
           });
         }

@@ -10,6 +10,10 @@ import { UserService } from 'src/app/core/services/user.service';
 import { finalize } from 'rxjs';
 import { APP_MESSAGE } from 'src/app/core/constants/app-message-constant';
 import { UserDuration } from 'src/app/core/constants/user-duration-constant';
+import { STATUS_BAN } from 'src/app/core/constants/status-ban-constant';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { Router } from '@angular/router';
+import { LocalStorageService } from 'src/app/core/services/localStorage.service';
 
 @Component({
   selector: 'app-add-or-edit-user-of-lecturer',
@@ -32,7 +36,7 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
   });
   public formEditUser: FormGroup;
 
-  constructor(injector: Injector, private userService: UserService, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddOrEditUserOfLecturerComponent>,
+  constructor(injector: Injector, public localStorageService: LocalStorageService, private router: Router, private authService: AuthService, private userService: UserService, private formBuilder: FormBuilder, public dialogRef: MatDialogRef<AddOrEditUserOfLecturerComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
     super(injector);
     this.formEditUser = new FormGroup({
@@ -80,6 +84,16 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
           this.alertMessageService.success(APP_MESSAGE.CREATE_USER_SUCCESSFULL);
         }
       }, (err) => {
+        if (err.error[Object.keys(err.error)[0]] ?? '' === STATUS_BAN.UNAUTHORIZED) {
+          this.alertMessageService.error(APP_MESSAGE.BANNED);
+          this.authService.logOut().subscribe(data => {
+            if (data) {
+              this.localStorageService.removeAll();
+              this.authService.loggedIn$.next(false);
+              this.router.navigate(['']);
+            }
+          });
+        }
         this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
       })
   }
@@ -106,6 +120,16 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
           this.alertMessageService.success(APP_MESSAGE.SAVE_SUCCESSFULL);
         }
       }, (err) => {
+        if (err.error[Object.keys(err.error)[0]] ?? '' === STATUS_BAN.UNAUTHORIZED) {
+          this.alertMessageService.error(APP_MESSAGE.BANNED);
+          this.authService.logOut().subscribe(data => {
+            if (data) {
+              this.localStorageService.removeAll();
+              this.authService.loggedIn$.next(false);
+              this.router.navigate(['']);
+            }
+          });
+        }
         this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
       })
   }

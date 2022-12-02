@@ -3,7 +3,6 @@ import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { PageChangeEvent } from '@progress/kendo-angular-pager';
-import { SortFilter } from 'src/app/core/models/sort-filter';
 import { MatDialog } from '@angular/material/dialog';
 import { PreviewPageComponent } from '../preview-page/preview-page.component';
 import { UserStatus } from 'src/app/core/constants/user-status-constant';

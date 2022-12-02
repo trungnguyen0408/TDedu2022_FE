@@ -120,4 +120,13 @@ export class UserService {
       return this.httpClient.get<any>(url, { headers: headers, params: params, responseType: 'blob' as 'json' });
     return this.httpClient.get<any>(url);
   }
+
+  public getBannedHistory(id: string): Observable<any> {
+    let headers = this.getHeaders();
+    const url = `${this.REST_API_SERVER}/ban-history/${id}`;
+    if (headers instanceof HttpHeaders)
+      return this.httpClient.get<any>(url, { headers: headers });
+    return this.httpClient.get<any>(url);
+  }
+  
 }

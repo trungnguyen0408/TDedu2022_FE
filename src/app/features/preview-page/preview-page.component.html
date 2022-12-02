@@ -63,11 +63,8 @@
         </div>
         <h5 class="label-custom">Banned</h5>
         <cdk-virtual-scroll-viewport appendOnly itemSize="50" class="example-viewport">
-          <div *cdkVirtualFor="let item of items" class="example-item">
-            <p>Time: {{item}}</p>
-            <p>Ban Duration: {{item}}</p>
-            <p>Resion: {{item}}</p>
-          </div>
+          <div [innerHTML]="banHistory" class="example-item" >           
+          </div>          
         </cdk-virtual-scroll-viewport>
       </div>
     </mat-tab>

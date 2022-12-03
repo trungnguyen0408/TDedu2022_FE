@@ -29,6 +29,16 @@
 
 }
 
+.value-captcha {
+  background-color: #b3b3b3;
+  min-height: 70px;
+  font-size: 24px;
+}
+
+.reset-icon {
+  cursor: pointer;
+}
+
 .login-button {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;

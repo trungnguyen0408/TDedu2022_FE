@@ -70,4 +70,8 @@ export abstract class BaseComponent {
     }
     return result;
   }
+
+  replaceSpace(value: string) {
+    return value ? value.replace(/\s/g, '') : '';
+  }
 }

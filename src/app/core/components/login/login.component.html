@@ -9,7 +9,14 @@
         <mat-label>Password</mat-label>
         <input formControlName="passWord" matInput type="password" placeholder="password">
       </mat-form-field>
-
+      <input class="value-captcha" matInput type="text" [value]="valueCaptcha" readonly>
+      <div class="d-flex align-items-center">
+        <mat-form-field class="password-field pt-2" appearance="fill">
+          <mat-label>Type the word above</mat-label>
+          <input formControlName="captcha" matInput type="text">
+        </mat-form-field>
+        <kendo-icon class="reset-icon" name="reset" size="medium" (click)="onChangeCaptcha()"></kendo-icon>
+      </div>
       <button class="login-button" type="submit" [disabled]="!loginForm.valid">login</button>
       <p class="message">Not registered? <a class="create-account" (click)="openDialog()">Create an account</a></p>
       <a class="create-account" (click)="openDialog(true)">Forgot password?</a>

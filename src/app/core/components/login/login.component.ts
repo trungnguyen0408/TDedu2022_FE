@@ -15,6 +15,8 @@ import { APP_MESSAGE } from '../../constants/app-message-constant';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent extends BaseComponent implements OnInit {
+  valueCaptcha: string;
+
   constructor(injector: Injector, public dialog: MatDialog, private authService: AuthService, private formBuilder: FormBuilder, private router: Router, private localStorageService: LocalStorageService) {
     super(injector);
     if (authService.isLoggedIn$) {
@@ -23,11 +25,23 @@ export class LoginComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.valueCaptcha = this.randomString(6);
+  }
+
+  randomString(length, chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') {
+    var result = '';
+    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)] + " ";
+    return result;
+  }
+
+  onChangeCaptcha() {
+    this.valueCaptcha = this.randomString(6);
   }
 
   public loginForm = this.formBuilder.group({
     userName: ['', Validators.required],
-    passWord: ['', Validators.required]
+    passWord: ['', Validators.required],
+    captcha: ['']
   });
 
   openDialog(isForgot: boolean = false) {
@@ -48,6 +62,13 @@ export class LoginComponent extends BaseComponent implements OnInit {
   onLogin() {
     const userName = this.loginForm.value.userName;
     const passWord = this.loginForm.value.passWord;
+    const captcha = this.loginForm.value.captcha;
+
+    if (this.replaceSpace(this.valueCaptcha) !== captcha) {
+      this.alertMessageService.error(APP_MESSAGE.CAPTCHA_ERROR);
+      return;
+    }
+
     this.showLoader();
     this.authService.logIn(userName, passWord).pipe(finalize(() => {
       this.showLoader(false);
@@ -62,7 +83,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
           this.router.navigate(['/home']);
         }
       }, (err) => {
-        this.loginForm.reset();
+        this.loginForm.controls['passWord'].reset();
+        this.onChangeCaptcha();
         this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
       })
   }

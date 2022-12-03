@@ -28,7 +28,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     this.valueCaptcha = this.randomString(6);
   }
 
-  randomString(length, chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ') {
+  randomString(length, chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ') {
     var result = '';
     for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)] + " ";
     return result;

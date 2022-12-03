@@ -244,6 +244,8 @@ export class AdminComponent extends BaseComponent implements OnInit {
         this.dataSource.data = response.data;
         this.totalData = response.total;
       }
+    }, (err) => {
+      this.alertMessageService.error(err.error[Object.keys(err.error)[0]] ?? '');
     });
   }
 

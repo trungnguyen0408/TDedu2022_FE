@@ -18,6 +18,7 @@ import { finalize } from 'rxjs';
 import { AccountUser } from 'src/app/core/models/account-user';
 import { DialogConfirmComponent } from 'src/app/core/components/dialog-confirm/dialog-confirm.component';
 import * as FileSaver from 'file-saver';
+import { SortFilter } from 'src/app/core/models/sort-filter';
 
 const EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
 
@@ -40,6 +41,10 @@ export class AdminComponent extends BaseComponent implements OnInit {
   pageSize: number = 10;
   pageIndex: number = 1;
   totalData: number;
+  sortFilter: SortFilter = {
+    sort_name: '',
+    sort_type: ''
+  };
 
   selectionUser = new SelectionModel<any>(true, []);
   listStatus = UserStatus.Status;
@@ -140,6 +145,12 @@ export class AdminComponent extends BaseComponent implements OnInit {
       });
   }
 
+  sortData(sortState: Sort) {
+    this.sortFilter.sort_name = sortState.active;
+    this.sortFilter.sort_type = sortState.direction;
+    this.handleGetUser();
+  }
+
   onEdit(item: any) {
     this.showLoader();
     this.userService.getById(item.id)
@@ -214,6 +225,8 @@ export class AdminComponent extends BaseComponent implements OnInit {
     filter.created_to = this.formatDate(this.getFormValue('createAtTo'));
     filter.page = this.pageIndex;
     filter.limit = this.pageSize;
+    filter.sort_name = this.sortFilter.sort_name;
+    filter.sort_type = this.sortFilter.sort_type;
 
     this.getUserByFilter(filter);
   }

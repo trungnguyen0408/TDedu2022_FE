@@ -28,7 +28,9 @@ export class UserService {
       .set('created_to', filter.created_to)
       .set('email', filter.email)
       .set('full_name', filter.fullName)
-      .set('status', filter.status);
+      .set('status', filter.status)
+      .set('sort_name', filter.sort_name)
+      .set('sort_type', filter.sort_type);
 
     const url = `${this.REST_API_SERVER}/user`;
     if (headers instanceof HttpHeaders)

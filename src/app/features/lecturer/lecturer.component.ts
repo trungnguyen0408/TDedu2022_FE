@@ -2,6 +2,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Component, Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { PageChangeEvent } from '@progress/kendo-angular-pager';
@@ -43,6 +44,7 @@ export class LecturerComponent extends BaseComponent implements OnInit {
     sort_name: '',
     sort_type: ''
   };
+
   listStatus = UserStatus.Status;
   defaultItem: { text: string, value: string } = { text: 'All', value: '' };
 
@@ -87,6 +89,8 @@ export class LecturerComponent extends BaseComponent implements OnInit {
     filter.created_to = this.formatDate(this.getFormValue('createAtTo'));
     filter.page = this.pageIndex;
     filter.limit = this.pageSize;
+    filter.sort_name = this.sortFilter.sort_name;
+    filter.sort_type = this.sortFilter.sort_type;
 
     this.getUserByFilter(filter);
   }
@@ -105,7 +109,7 @@ export class LecturerComponent extends BaseComponent implements OnInit {
         this.totalData = response.total;
       }
     }, (err) => {
-      if (err.error[Object.keys(err.error)[0]] ?? '' === STATUS_BAN.UNAUTHORIZED) {
+      if (err.error[Object.keys(err.error)[0]] === STATUS_BAN.UNAUTHORIZED) {
         this.alertMessageService.error(APP_MESSAGE.BANNED);
         this.authService.logOut().subscribe(data => {
           if (data) {
@@ -114,7 +118,9 @@ export class LecturerComponent extends BaseComponent implements OnInit {
             this.router.navigate(['']);
           }
         });
-      }
+      } else {
+        this.alertMessageService.error(err.error[Object.keys(err.error)[0]] ?? '');
+      };
     });
   }
 
@@ -148,7 +154,7 @@ export class LecturerComponent extends BaseComponent implements OnInit {
           });
         }
       }, (err) => {
-        if (err.error[Object.keys(err.error)[0]] ?? '' === STATUS_BAN.UNAUTHORIZED) {
+        if (err.error[Object.keys(err.error)[0]] === STATUS_BAN.UNAUTHORIZED) {
           this.alertMessageService.error(APP_MESSAGE.BANNED);
           this.authService.logOut().subscribe(data => {
             if (data) {
@@ -157,6 +163,8 @@ export class LecturerComponent extends BaseComponent implements OnInit {
               this.router.navigate(['']);
             }
           });
+        }else{
+          this.alertMessageService.error(APP_MESSAGE.USER_NOT_FOUND);
         }
       });
   }
@@ -180,7 +188,7 @@ export class LecturerComponent extends BaseComponent implements OnInit {
           });
         }
       }, (err) => {
-        if (err.error[Object.keys(err.error)[0]] ?? '' === STATUS_BAN.UNAUTHORIZED) {
+        if (err.error[Object.keys(err.error)[0]] === STATUS_BAN.UNAUTHORIZED) {
           this.alertMessageService.error(APP_MESSAGE.BANNED);
           this.authService.logOut().subscribe(data => {
             if (data) {
@@ -189,6 +197,8 @@ export class LecturerComponent extends BaseComponent implements OnInit {
               this.router.navigate(['']);
             }
           });
+        }else{
+          this.alertMessageService.error(APP_MESSAGE.USER_NOT_FOUND);
         }
       });
   }
@@ -203,5 +213,11 @@ export class LecturerComponent extends BaseComponent implements OnInit {
         this.handleGetUser();
       }
     });
+  }
+
+  sortData(sortState: Sort) {
+    this.sortFilter.sort_name = sortState.active;
+    this.sortFilter.sort_type = sortState.direction;
+    this.handleGetUser();
   }
 }

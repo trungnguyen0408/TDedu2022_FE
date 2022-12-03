@@ -84,7 +84,7 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
           this.alertMessageService.success(APP_MESSAGE.CREATE_USER_SUCCESSFULL);
         }
       }, (err) => {
-        if (err.error[Object.keys(err.error)[0]] ?? '' === STATUS_BAN.UNAUTHORIZED) {
+        if (err.error[Object.keys(err.error)[0]] === STATUS_BAN.UNAUTHORIZED) {
           this.alertMessageService.error(APP_MESSAGE.BANNED);
           this.authService.logOut().subscribe(data => {
             if (data) {
@@ -93,8 +93,9 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
               this.router.navigate(['']);
             }
           });
+        } else {
+          this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
         }
-        this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
       })
   }
 
@@ -120,7 +121,7 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
           this.alertMessageService.success(APP_MESSAGE.SAVE_SUCCESSFULL);
         }
       }, (err) => {
-        if (err.error[Object.keys(err.error)[0]] ?? '' === STATUS_BAN.UNAUTHORIZED) {
+        if (err.error[Object.keys(err.error)[0]] === STATUS_BAN.UNAUTHORIZED) {
           this.alertMessageService.error(APP_MESSAGE.BANNED);
           this.authService.logOut().subscribe(data => {
             if (data) {
@@ -129,8 +130,9 @@ export class AddOrEditUserOfLecturerComponent extends BaseComponent implements O
               this.router.navigate(['']);
             }
           });
+        } else {
+          this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
         }
-        this.alertMessageService.error(`${err.error[Object.keys(err.error)[0]] ?? ''}`);
       })
   }
 }

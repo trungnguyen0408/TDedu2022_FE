@@ -141,6 +141,8 @@ export class AdminComponent extends BaseComponent implements OnInit {
               this.handleGetUser();
             }
           });
+        } else {
+          this.alertMessageService.error(APP_MESSAGE.USER_NOT_FOUND);
         }
       });
   }
@@ -168,6 +170,8 @@ export class AdminComponent extends BaseComponent implements OnInit {
               this.handleGetUser();
             }
           });
+        } else {
+          this.alertMessageService.error(APP_MESSAGE.USER_NOT_FOUND);
         }
       });
   }

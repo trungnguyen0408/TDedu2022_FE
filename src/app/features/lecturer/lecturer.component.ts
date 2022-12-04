@@ -91,6 +91,9 @@ export class LecturerComponent extends BaseComponent implements OnInit {
     filter.limit = this.pageSize;
     filter.sort_name = this.sortFilter.sort_name;
     filter.sort_type = this.sortFilter.sort_type;
+    if ((filter.sort_name === 'role' || filter.sort_name === 'full_name')) {
+      filter.sort_name = '';
+    }
 
     this.getUserByFilter(filter);
   }

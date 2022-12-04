@@ -230,6 +230,9 @@ export class AdminComponent extends BaseComponent implements OnInit {
     filter.page = this.pageIndex;
     filter.limit = this.pageSize;
     filter.sort_name = this.sortFilter.sort_name;
+    if ((filter.sort_name === 'role' || filter.sort_name === 'full_name')) {
+      filter.sort_name = '';
+    }
     filter.sort_type = this.sortFilter.sort_type;
 
     this.getUserByFilter(filter);
